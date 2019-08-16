@@ -6,7 +6,6 @@ import os
 import sys
 import functools
 import math
-import json
 
 def evaluate_expression(expression,data):
     """
@@ -89,50 +88,29 @@ def evaluate_expression(expression,data):
     return OPND.pop()
 
 
-def compute_using_descriptors(path=None,result=None,training=True,data=None,task_idx=None,dimension_idx=None):
+def compute_using_descriptors(path=None,data_path=None,result=None):
     """
-    Return a list [task_index], whose item is numpy array [dimension, sample_index],
+    Return a 2D numpy array (sample_index, dimension),
     whose item is the value computed using descriptors found by SISSO.
     """
     if path:
         result=Result(path)
+    if data_path:
+        data=pd.read_csv(data_path,sep=' ')
+    else:
+        data=result.data
     pred=[]
-    if training==True:
-        for task in range(0,result.task_number):
-            pred_t=[]
-            for dimension in range(0,result.dimension):
-                value=0
-                for i in range(0,dimension+1):
-                    value+=result.coefficients()[task][dimension][i]*evaluate_expression(result.descriptors()[dimension][i],result.data_task[task])
-                value+=result.intercepts()[task][dimension]
-                pred_t.append(list(value))
-            pred.append(np.array(pred_t))
-    if training==False:
-        if data==None:
-            for task in range(0,result.task_number):
-                pred_t=[]
-                for dimension in range(0,result.dimension):
-                    value=0
-                    for i in range(0,dimension+1):
-                        value+=result.coefficients()[task][dimension][i]*evaluate_expression(result.descriptors()[dimension][i],result.validation_data_task[task])
-                    value+=result.intercepts()[task][dimension]
-                    pred_t.append(list(value))
-                pred.append(np.array(pred_t))
-        else:
-            if isinstance(data,str):
-                data=pd.read_csv(os.path.join(data),sep=' ')
-            else:
-                for i in range(0,dimension_idx):
-                    value+=result.coefficients()[task_idx][dimension_idx][i]*evaluate_expression(result.descriptors()[dimension_idx][i],data)
-                value+=result.intercepts()[task_idx][dimension_idx]
-                pred=value
-    return pred
+    for dimension in range(0,result.dimension):
+        value=0
+        for i in range(0,dimension+1):
+            value+=result.coefficients()[dimension][i]*evaluate_expression(result.descriptors()[dimension][i],data)
+        value+=result.intercepts()[dimension]
+        pred.append(np.array(value))
+    return np.array(pred).T
 
-'''
-def errors(result=None,training=True):
+def errors(path=None,data_path=None,result=None):
     """
     Return the errors of given class Result's data or a given data path.
-    """
     """
     if path:
         result=Result(path)
@@ -157,17 +135,11 @@ def errors(result=None,training=True):
                             sorted_error[-1]])
     error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,result.dimension+1)))
     return error
-    """
-    if training=True:
-        items_error=result.training_values()-result.property.values
-'''
 
-'''
-def item_errors(result=None,*item_index):
+def item_errors(item_index,path=None,data_path=None,result=None):
     """
     Return the errors of item_index data point in the data set.
     """
-    
     if path:
         result=Result(path)
     if data_path:
@@ -184,17 +156,15 @@ def item_errors(result=None,*item_index):
         value+=result.intercepts()[dimension]
         error[dimension]=value-property_test
     return error
-'''
 
-def compute_errors(errors):
+def total_items_errors(errors):
     """
-    Return the errors of given numpy array errors (task_index, dimension, sample_index), if errors is 2D numpy array,
+    Return the errors of given 2D numpy array errors (sample_index, dimension), if errors is 2D numpy array,
     or return the errors of given 1D numpy array error
     """
-    
-    if isinstance(errors[0],float):
+    samples_num=len(errors)
+    if errors.ndim==1:
         error=np.zeros(shape=(1,6))
-        samples_num=len(errors)
         sorted_error=np.sort(np.abs(errors))
         error[0]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
                                 np.mean(sorted_error),
@@ -203,28 +173,11 @@ def compute_errors(errors):
                                 sorted_error[math.ceil(samples_num*0.95)-1],
                                 sorted_error[-1]])
         error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'])
-    elif isinstance(errors,list) and isinstance(errors[0],np.ndarray):
-        task_num=len(errors)
-        dimension_num=len(errors[0])
-        error=[]
-        for task in range(0,task_num):
-            error_t=np.zeros(shape=(dimension_num,6))
-            samples_num=errors[task].shape[1]
-            for dimension in range(0,dimension_num):
-                sorted_error=np.sort(np.abs(errors[task][dimension]))
-                error_t[dimension]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
-                                    np.mean(sorted_error),
-                                    sorted_error[math.ceil(samples_num*0.5)-1],
-                                    sorted_error[math.ceil(samples_num*0.75)-1],
-                                    sorted_error[math.ceil(samples_num*0.95)-1],
-                                    sorted_error[-1]])
-            error.append(pd.DataFrame(error_t,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,dimension_num+1))))
     elif errors.ndim==2:
-        samples_num=len(errors[0])
-        dimensions=len(errors)
+        dimensions=len(errors[0])
         error=np.zeros(shape=(dimensions,6))
         for dimension in range(0,dimensions):
-            sorted_error=np.sort(np.abs(errors[dimension]))
+            sorted_error=np.sort(np.abs(errors[:,dimension]))
             error[dimension]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
                                 np.mean(sorted_error),
                                 sorted_error[math.ceil(samples_num*0.5)-1],
@@ -233,7 +186,6 @@ def compute_errors(errors):
                                 sorted_error[-1]])
         error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,dimensions+1)))
     return error
-
 
 class Result(object):
     """
@@ -248,48 +200,16 @@ class Result(object):
             dimension=int(re.findall(r'desc_dim\s*=\s*(\d+)',input_file)[0])
             operation_set=re.findall(r"opset\s*=\s*'(.+)'",input_file)
             operation_set=re.split(r'[\(\)]+',operation_set[0])[1:-1]
-            task_number=int(re.findall(r'ntask\s*=\s*(\d+)',input_file)[0])
-            samples_number=re.findall(r'nsample\s*=\s*([\d, ]+)',input_file)[0]
-            samples_number=re.split(r'[,\s]+',samples_number)
-            if samples_number[-1]=='':
-                samples_number=samples_number[:-1]
-            samples_number=list(map(int,samples_number))
-            task_weighting=int(re.findall(r'task_weighting\s*=\s*(\d+)',input_file)[0])
-        self.task_weighting=task_weighting
-        self.task_number=task_number
         self.operation_set=operation_set
-        self.subs_sis=subs_sis
-        self.rung=rung
-        self.dimension=dimension
-        self.samples_number=samples_number
         self.data=pd.read_csv(os.path.join(current_path,'train.dat'),sep=' ')
         self.property_name=self.data.columns.tolist()[1]
         self.property=self.data.iloc[:,1]
         self.features_name=self.data.columns.tolist()[2:]
         self.materials=self.data.iloc[:,0]
-        
-        self.data_task=[]
-        self.property_task=[]
-        self.materials_task=[]
-        i=0
-        for task in range(0,self.task_number):
-            self.data_task.append(self.data.iloc[i:i+self.samples_number[task]])
-            self.property_task.append(self.property.iloc[i:i+self.samples_number[task]])
-            self.materials_task.append(self.materials.iloc[i:i+self.samples_number[task]])
-            i+=self.samples_number[task]
-        
-        if os.path.exists(os.path.join(self.current_path,'validation.dat')):
-            self.validation_data=pd.read_csv(os.path.join(current_path,'validation.dat'),sep=' ')
-            with open(os.path.join(self.current_path,'shuffle.dat'),'r') as f:
-                shuffle=json.load(f)
-            self.samples_number=shuffle['training_samples_number']
-            self.validation_samples_number=shuffle['validation_samples_number']
-            self.validation_data_task=[]
-            i=0
-            for task in range(0,self.task_number):
-                self.validation_data_task.append(self.validation_data.iloc[i:i+self.validation_samples_number[task]])
-                i+=self.validation_samples_number[task]
-
+        self.samples_number=len(self.materials)
+        self.subs_sis=subs_sis
+        self.rung=rung
+        self.dimension=dimension
     
     def descriptors(self,path=None):
         """
@@ -313,37 +233,31 @@ class Result(object):
     
     def coefficients(self,path=None):
         """
-        Return a list [task_index, dimension, descriptor_index]
+        Return a list, whose ith item is ith D coefficients.
         """
         if path==None:
             path=self.current_path
         coefficients_all=[]
-        for task in range(0,self.task_number):
-            coefficients_t=[]
-            with open(os.path.join(path,'SISSO.out'),'r') as f:
-                input_file=f.read()
-                coefficients_total=re.findall(r'coefficients_00%d:(.*)'%(task+1),input_file)
-                for dimension in range(0,self.dimension):
-                    coefficients_d=re.split(r'\s+',coefficients_total[dimension])[1:]
-                    coefficients_d=list(map(float,coefficients_d))
-                    coefficients_t.append(coefficients_d)
-            coefficients_all.append(coefficients_t)
+        with open(os.path.join(path,'SISSO.out'),'r') as f:
+            input_file=f.read()
+            coefficients_total=re.findall(r'coefficients_001:(.*)',input_file)
+            for dimension in range(0,self.dimension):
+                coefficients_d=re.split(r'\s+',coefficients_total[dimension])[1:]
+                coefficients_d=list(map(float,coefficients_d))
+                coefficients_all.append(coefficients_d)
         return coefficients_all
                 
     
     def intercepts(self,path=None):
         """
-        Return a list [task_index, dimension]
+        Return a list, whose ith item is ith D intercepts.
         """
         if path==None:
             path=self.current_path
-        intercepts_all=[]
-        for task in range(0,self.task_number):
-            with open(os.path.join(path,'SISSO.out'),'r') as f:
-                input_file=f.read()
-                intercepts_t=re.findall(r'Intercept_00%d:(.*)'%(task+1),input_file)
-                intercepts_t=list(map(float,intercepts_t))
-            intercepts_all.append(intercepts_t)
+        with open(os.path.join(path,'SISSO.out'),'r') as f:
+            input_file=f.read()
+            intercepts_all=re.findall(r'Intercept_001:(.*)',input_file)
+            intercepts_all=list(map(float,list(map(str,intercepts_all))))
         return intercepts_all
     
     def features_percent(self):
@@ -374,39 +288,34 @@ class Result(object):
         """
         return evaluate_expression(expression,self.data)
     
-    def values(self,training=True,display_task=False):
+    def training_values(self):
         """
-        Return a 2D numpy array [dimension, sample_index],
+        Return a 2D numpy array (sample_index, dimension),
         whose item is the value computed using descriptors found by SISSO.
-        
-        Return numpy array (task_index, sample_index, dimension),
         """
-        if training==True:
-            if display_task==True:
-                return compute_using_descriptors(result=self)
-            else:
-                return np.hstack(compute_using_descriptors(result=self))
+        return compute_using_descriptors(result=self)
     
-    def errors(self,training=True,display_task=False):
-        """
-        Return a numpy array [task, dimension, sample_index], whose value is error.
-        
-        Return a numpy array [dimension, sample_index], whose value is error.
-        """
-        if training==True:
-            if display_task==True:
-                pred=self.values(training=True,display_task=True)
-                return [pred[task]-self.property_task[task].values for task in range(0,self.task_number)]
-            else:
-                return self.values(training=True,display_task=False)-self.property.values
+    """
+    def training_errors_old(self):
+        errors=np.zeros(shape=(self.dimension,2))
+        with open(os.path.join(self.current_path,'SISSO.out'),'r') as f:
+            input_file=f.read()
+            errors=np.array(re.findall(r'\dD des.+\s+.+:\s+(\d*\.\d*)\s*(\d*\.\d*)',input_file))
+        return errors
+    """
     
-    def total_errors(self,training=True,display_task=False):
+    def training_errors(self):
         """
-        Return a list [task_index], whose item is a pandas DataFrame [dimension, type of error]
-        
-        Return a pandas DataFrame [dimension, type of error].
+        Return a pandas DataFrame (dimension, type of error).
         """
-        return compute_errors(self.errors(training=True,display_task=display_task))
+        return errors(result=self)
+    
+    def items_training_errors(self):
+        """
+        Return a 2D numpy array (sample_index, dimension), whose value is error.
+        """
+        return np.array([item_errors(item_index,result=self) for item_index in range(0,self.samples_number)])
+
 
 
 
@@ -428,10 +337,6 @@ class Results(Result):
                 dimension=int(re.findall(r'desc_dim\s*=\s*(\d+)',input_file)[0])
                 operation_set=re.findall(r"opset\s*=\s*'(.+)'",input_file)
                 operation_set=re.split(r'[\(\)]+',operation_set[0])[1:-1]
-                task_number=int(re.findall(r'ntask\s*=\s*(\d+)',input_file)[0])
-                task_weighting=int(re.findall(r'task_weighting\s*=\s*(\d+)',input_file)[0])
-        self.task_number=task_number
-        self.task_weighting=task_weighting
         self.operation_set=operation_set
         self.subs_sis=subs_sis
         self.rung=rung
@@ -440,46 +345,15 @@ class Results(Result):
         self.data=[]
         self.materials=[]
         self.samples_number=[]
-        self.validation_samples_number=[]
         self.property=[]
         self.validation_data=[]
-        for cv in range(0,self.cv_number):
+        for cv in range(0,cv_number):
             self.data.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'train.dat'),sep=' '))
             self.validation_data.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'validation.dat'),sep=' '))
             self.property.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'train.dat'),sep=' ').iloc[:,1])
             self.materials.append(self.data[cv].iloc[:,0])
-            with open(os.path.join(self.current_path,'%s_cv0'%(self.property_name),'shuffle.dat'),'r') as f:
-                shuffle=json.load(f)
-            self.samples_number.append(shuffle['training_samples_number'])
-            self.validation_samples_number.append(shuffle['validation_samples_number'])
+            self.samples_number.append(len(self.materials[cv]))
         self.features_name=self.data[0].columns.tolist()[2:]
-        self.samples_number=np.array(self.samples_number)
-        self.validation_samples_number=np.array(self.validation_samples_number)
-        
-        self.data_task=[]
-        self.property_task=[]
-        self.materials_task=[]
-        self.validation_data_task=[]
-        for cv in range(0,self.cv_number):
-            data_t=[]
-            property_t=[]
-            materials_t=[]
-            validation_data_t=[]
-            i,j=0,0
-            for task in range(0,self.task_number):
-                data_t.append(self.data[cv].iloc[i:i+self.samples_number[cv,task]])
-                validation_data_t.append(self.validation_data[cv].iloc[j:j+self.validation_samples_number[cv,task]])
-                property_t.append(self.property[cv].iloc[i:i+self.samples_number[cv,task]])
-                materials_t.append(self.materials[cv].iloc[i:i+self.samples_number[cv,task]])
-                i+=self.samples_number[cv,task]
-                j+=self.validation_samples_number[cv,task]
-            self.data_task.append(data_t)
-            self.validation_data_task.append(validation_data_t)
-            self.property_task.append(property_t)
-            self.materials_task.append(materials_t)
-        self.property_task=np.array(self.property_task)
-        self.materials_task=np.array(self.materials_task)
-    
     
     def find_materials_in_validation(self,*idxs):
         val_num=len(self.validation_data[0])
@@ -512,6 +386,20 @@ class Results(Result):
         There are total cv_number*subs_sis descriptors,
         the feature percent is the percent over these descriptors.
         """
+        """
+        feature_percent=pd.DataFrame(self.features_name)
+        feature_percent.insert(1,'percent',np.zeros(len(self.features_name)))
+        for cv in range(0,self.cv_number):
+            feature_space=pd.read_csv(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'feature_space','Uspace.name'),sep=' ',header=None).iloc[0:self.subs_sis,0]
+            index=0
+            for feature_name in self.features_name:
+                count=feature_space.str.contains(feature_name).sum()
+                feature_percent.loc[index,'percent']+=count
+                index+=1
+        feature_percent.iloc[:,1]=feature_percent.iloc[:,1]/(self.cv_number*self.subs_sis)
+        feature_percent.sort_values('percent',inplace=True,ascending=False)
+        return feature_percent
+        """
         feature_percent=pd.DataFrame(columns=self.features_name,index=('percent',))
         feature_percent.iloc[0,:]=0
         for cv in range(0,self.cv_number):
@@ -521,7 +409,7 @@ class Results(Result):
                 feature_percent.loc['percent',feature_name]+=count
         feature_percent.iloc[0,:]=feature_percent.iloc[0,:]/(self.cv_number*self.subs_sis)
         return feature_percent
-    
+
     def descriptor_percent(self,descriptor):
         """
         Return the percent of given descriptor appearing in the cross validation top subs_sis descriptors,
@@ -538,76 +426,153 @@ class Results(Result):
                 descriptor_index[cv]=None
         return count/self.cv_number,descriptor_index
     
-    def values(self,training=True,display_cv=False,display_task=False):
+    def training_values(self):
         """
-        Return a list [cv_index],
-        whose item is a list [task_index], whose item is a 2D numpy array [dimension, sample_index, dimension].
+        Return a list, whose ith item is ith cross validation value computed by corresponding descriptors found by SISSO.
+        Each item is a 2D numpy array (sample_index, dimension).
+        """
+        return [compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)))
+                for cv in range(0,self.cv_number)]
         
-        Return a list [cv_index], whose item is a 2D numpy array [dimension, sample_index],
-        whose item is the value computed using descriptors found by SISSO.
+    def prediction_values(self):
         """
-        if display_cv==True:
-            if training==True:
-                if display_task==True:
-                    return [compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)))
-                            for cv in range(0,self.cv_number)]
-                else:
-                    return [np.hstack(compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv))))
-                    for cv in range(0,self.cv_number)]
-            else:
-                if display_task==True:
-                    return [compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)),
-                                            training=False)
-                    for cv in range(0,self.cv_number)]
-                else:
-                    return [np.hstack(compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)),
-                                            training=False))
-                    for cv in range(0,self.cv_number)]
-        else:
-            return np.hstack(self.values(training=training,display_cv=True,display_task=False))
+        Return a list, whose ith item is ith cross validation value computed by corresponding descriptors found by SISSO.
+        Each item is a 2D numpy array (sample_index, dimension).
+        """
+        return [compute_using_descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)),
+                                        data_path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'validation.dat'))
+                for cv in range(0,self.cv_number)]
     
-    def errors(self,training=True,display_cv=False,display_task=False):
+    def training_errors(self):
         """
-        Return a list [cv_index, task_index],
-        whose item is a 2D numpy array [dimension, sample_index].
-        
-        Return a list [cv_index],
-        whose item is a 2D numpy array [dimension, sample_index].
+        Return a list, whose ith item is a pandas DataFrame,
+        which refers to ith cross validation errors.
         """
-        if display_cv==True:
-            if training==True:
-                if display_task==True:
-                    error=[]
-                    pred=self.values(training=True,display_cv=True,display_task=True)
-                    for cv in range(0,self.cv_number):
-                        error_cv=[]
-                        for task in range(0,self.task_number):
-                            error_cv.append(pred[cv][task]-self.property_task[cv][task].values)
-                        error.append(error_cv)
-                    return error
-                else:
-                    pred=self.values(training=True,display_cv=True,display_task=True)
-                    return [np.hstack(pred[cv])-np.hstack(self.property_task[cv])
-                            for cv in range(0,self.cv_number)]
-            else:
-                if display_task==True:
-                    error=[]
-                    pred=self.values(training=False,display_cv=True,display_task=True)
-                    for cv in range(0,self.cv_number):
-                        error_cv=[]
-                        for task in range(0,self.task_number):
-                            error_cv.append(pred[cv][task]-self.validation_data_task[cv][task].iloc[:,1].values)
-                        error.append(error_cv)
-                    return error
-                else:
-                    pred=self.values(training=False,display_cv=True,display_task=True)
-                    return [(np.hstack(pred[cv])-self.validation_data[cv].iloc[:,1].values)
-                            for cv in range(0,self.cv_number)]
-        else:
-            return np.hstack(self.errors(training=training,display_cv=True,display_task=False))
+        return [errors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)))
+                for cv in range(0,self.cv_number)]
+    
+    def items_training_errors(self):
+        """
+        Return a 2D numpy array (sample_index, dimension),
+        whose item is the error corresponding to the sample.
+        """
+        return np.array([item_errors(item_index=item_index,
+                        path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)))
+                        for cv in range(0,self.cv_number) for item_index in range(0,self.samples_number[cv])])
+    
+    def prediction_errors(self):
+        """
+        Return a list, whose ith item is a pandas DataFrame,
+        which refers to ith cross validation errors.
+        """
+        return [errors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)),
+                        data_path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'validation.dat'))
+                for cv in range(0,self.cv_number)]
         
-    def total_errors(self,training=True):
+    def items_prediction_errors(self):
+        """
+        Return a 2D numpy array (sample_index, dimension),
+        whose item is the error corresponding to the sample.
+        """
+        return np.array([item_errors(item_index=item_index,
+                        path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv)),
+                        data_path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'validation.dat'))
+                        for cv in range(0,self.cv_number) for item_index in range(0,self.total_materials_number-self.samples_number[cv])])
+    
+    def total_training_errors(self):
         """
         Return the errors over whole cross validation.
         """
-        return compute_errors(self.errors(training=training,display_cv=False,display_task=False))
+        return total_items_errors(self.items_training_errors())
+    
+    def total_prediction_errors(self):
+        """
+        Return the errors over whole cross validation.
+        """
+        return total_items_errors(self.items_prediction_errors())
+    
+    """
+    def training_errors_old(self):
+        errors=np.zeros(shape=(self.cv_number,self.dimension,2))
+        for cv in range(0,self.cv_number):
+            with open(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'SISSO.out'),'r') as f:
+                input_file=f.read()
+                errors[cv]=np.array(re.findall(r'\dD des.+\s+.+:\s+(\d*\.\d*)\s*(\d*\.\d*)',input_file))
+        return errors
+
+    def prediction_errors_old(self):
+        errors=[]
+        for cv in range(0,self.cv_number):
+            with open(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'shuffle.dat'),'r') as f:
+                input_file=f.read()
+                val_list=re.findall(r'validation_list:\ \[[(\d+)\s+]+',input_file)[0]
+                val_list=re.split(r'\s+|\[',val_list)
+                val_list=np.array(list(map(int,list(filter(str.isdigit,val_list)))))
+            data=pd.read_csv(os.path.join(self.current_path,'train.dat'),sep=' ').iloc[val_list-1]
+            property_test=data.iloc[:,1]
+            with open(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'SISSO.out'),'r') as f:
+                input_file=f.read()
+                descriptors=re.findall(r'descriptor:[\s\S]*?coefficients',input_file)
+                coefficients=re.findall(r'coefficients_001:(.*)',input_file)
+                intercepts=re.findall(r'Intercept_001:(.*)',input_file)
+                intercepts=list(map(float,list(map(str,intercepts))))
+                ers=np.zeros(shape=(self.dimension,6))
+                for dimension in range(0,self.dimension):
+                    descriptors_d=descriptors[dimension]
+                    descriptors_d=re.split(r'\s+',descriptors_d)
+                    descriptors_d=descriptors_d[1:dimension+2]
+                    descriptors_d=[x[1] for x in list(map(lambda x: re.split(r':',x),descriptors_d))]
+                    #descriptors_d=list(map(lambda x: x.strip(r'[]'),descriptors_d))
+                    descriptors_d=list(map(lambda x: x.replace(r'[',r'('),descriptors_d))
+                    descriptors_d=list(map(lambda x: x.replace(r']',r')'),descriptors_d))
+                    coefficients_d=re.split(r'\s+',coefficients[dimension])[1:]
+                    coefficients_d=list(map(float,coefficients_d))
+                    value=0
+                    for i in range(0,dimension+1):
+                        value+=coefficients_d[i]*evaluate_expression(descriptors_d[i],data)
+                    value+=intercepts[dimension]
+                    ers[dimension]=np.array([np.sqrt(np.mean((value-property_test)**2)),
+                                        np.mean(np.abs(value-property_test)),
+                                        np.sort(np.abs(value-property_test))[math.ceil(len(data)*0.5)-1],
+                                        np.sort(np.abs(value-property_test))[math.ceil(len(data)*0.75)-1],
+                                        np.sort(np.abs(value-property_test))[math.ceil(len(data)*0.95)-1],
+                                        np.sort(np.abs(value-property_test))[-1]])
+            ers=pd.DataFrame(ers,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,self.dimension+1)))
+            errors.append(ers)
+        return errors
+    
+    def items_prediction_errors_old(self):
+        error=[]
+        for cv in range(0,self.cv_number):
+            with open(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'shuffle.dat'),'r') as f:
+                input_file=f.read()
+                val_list=re.findall(r'validation_list:\ \[[(\d+)\s+]+',input_file)[0]
+                val_list=re.split(r'\s+|\[',val_list)
+                val_list=np.array(list(map(int,list(filter(str.isdigit,val_list)))))
+            data=pd.read_csv(os.path.join(self.current_path,'train.dat'),sep=' ').iloc[val_list-1]
+            property_test=data.iloc[:,1]
+            with open(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'SISSO.out'),'r') as f:
+                input_file=f.read()
+                descriptors=re.findall(r'descriptor:[\s\S]*?coefficients',input_file)
+                coefficients=re.findall(r'coefficients_001:(.*)',input_file)
+                intercepts=re.findall(r'Intercept_001:(.*)',input_file)
+                intercepts=list(map(float,list(map(str,intercepts))))
+                ers=np.zeros(shape=(len(val_list),self.dimension))
+                for dimension in range(0,self.dimension):
+                    descriptors_d=descriptors[dimension]
+                    descriptors_d=re.split(r'\s+',descriptors_d)
+                    descriptors_d=descriptors_d[1:dimension+2]
+                    descriptors_d=[x[1] for x in list(map(lambda x: re.split(r':',x),descriptors_d))]
+                    #descriptors_d=list(map(lambda x: x.strip(r'[]'),descriptors_d))
+                    descriptors_d=list(map(lambda x: x.replace(r'[',r'('),descriptors_d))
+                    descriptors_d=list(map(lambda x: x.replace(r']',r')'),descriptors_d))
+                    coefficients_d=re.split(r'\s+',coefficients[dimension])[1:]
+                    coefficients_d=list(map(float,coefficients_d))
+                    value=0
+                    for i in range(0,dimension+1):
+                        value+=coefficients_d[i]*evaluate_expression(descriptors_d[i],data)
+                    value+=intercepts[dimension]
+                    ers[:,dimension]=np.array(value-property_test)
+            error.append(ers)
+        return np.array(error)
+    """
