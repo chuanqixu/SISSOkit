@@ -19,30 +19,24 @@ def baselineplot(result,unit_name=None,marker='x',marker_color='r',fontsize=20,m
     plt.title('Histogram of %s over training data\nMean = %.5f\nStandard deviation = %.5f'%(result.property_name,result.property.mean(),result.property.std()),fontsize=fontsize)
     plt.legend()
 
-def signed_error_hist(dimension,*results,training=True,unit_name=None,fontsize=20,**kw):
+def error_hist(dimension,*results,training=True,abs=False,unit_name=None,fontsize=20,**kw):
     """
-    Plot the histogram of signed error
-    """
-    dimension-=1
-    collect_data=np.hstack([result.errors(training=training)[dimension,:] for result in results])
-    plt.hist(collect_data,**kw)
-    if unit_name:
-        plt.xlabel('Signed error %s'%('['+unit_name+']'),fontsize=fontsize)
-    else:
-        plt.xlabel('Signed error',fontsize=fontsize)
-    plt.ylabel('Counts',fontsize=fontsize)
-        
-def absolute_error_hist(dimension,*results,training=True,unit_name=None,fontsize=20,**kw):
-    """
-    Plot the histogram of absolute error
+    Plot the histogram of signed or absolute error
     """
     dimension-=1
-    collect_data=np.hstack([np.abs(result.errors(training=training))[dimension,:] for result in results])
-    plt.hist(collect_data,**kw)
-    if unit_name:
-        plt.xlabel('Absolute error %s'%('['+unit_name+']'),fontsize=fontsize)
+    if abs:
+        collect_data=np.hstack([np.abs(result.errors(training=training))[dimension,:] for result in results])
+        if unit_name:
+            plt.xlabel('Signed error %s'%('['+unit_name+']'),fontsize=fontsize)
+        else:
+            plt.xlabel('Signed error',fontsize=fontsize)
     else:
-        plt.xlabel('Absolute error',fontsize=fontsize)
+        collect_data=np.hstack([result.errors(training=training)[dimension,:] for result in results])
+        if unit_name:
+            plt.xlabel('Absolute error %s'%('['+unit_name+']'),fontsize=fontsize)
+        else:
+            plt.xlabel('Absolute error',fontsize=fontsize)
+    plt.hist(collect_data,**kw)
     plt.ylabel('Counts',fontsize=fontsize)
     
 def property_vs_prediction(dimension,*results,training=True,unit_name=None,fontsize=20,**kw):
@@ -82,30 +76,30 @@ def hist_and_box_plot(dimension,*results,training=True,unit_name=None,fontsize=2
     
     errors=evl.compute_errors(collect_data)
     if selected_errors==None:
-        selected_errors=('RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE')
+        selected_errors=('RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE')
     if marker==None:
-        marker={'RMSE':'s','MAE':'x','50%ile AE':'X','75%ile AE':'D','95%ile AE':'+','MaxAE':'.'}
+        marker={'RMSE':'s','MAE':'x','25%ile AE':'p','50%ile AE':'X','75%ile AE':'D','95%ile AE':'+','MaxAE':'.'}
     for selected_error in selected_errors:
         plt.scatter(marker_x,errors[selected_error],s=50,zorder=1,marker=marker[selected_error],label=selected_error)
     plt.legend()
     
-def abs_errors_vs_dimension(*results,training=True,unit_name=None,fontsize=20,selected_errors=None,**kw):
+def abs_errors_vs_dimension(*results,training=True,unit_name=None,fontsize=20,selected_errors=None,label=None,**kw):
     """
     Plot the histogram of absolute errors with box plot for errors
     """
-    collect_data=np.concatenate([np.abs(result.errors(training=training)) for result in results],axis=0)
+    collect_data=np.hstack([np.abs(result.errors(training=training)) for result in results])
     errors=evl.compute_errors(collect_data)
     if selected_errors==None:
-        selected_errors=('RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE')
+        selected_errors=('RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE')
     for selected_error in selected_errors:
-        errors[selected_error].plot(label=selected_error,**kw)
-        plt.scatter(errors.index,errors[selected_error])
+        errors[selected_error].plot(label=label+':'+selected_error,**kw)
+        plt.scatter(errors.index.values,errors[selected_error].values)
     
     plt.legend()
     if unit_name:
-        plt.ylabel('Absolute error %s'%('['+unit_name+']'),fontsize=fontsize)
+        plt.ylabel('Errors %s'%('['+unit_name+']'),fontsize=fontsize)
     else:
-        plt.ylabel('Absolute error',fontsize=fontsize)
+        plt.ylabel('Errors',fontsize=fontsize)
     plt.xlabel('Dimension of the descriptor',fontsize=fontsize)
     plt.xlim(0,len(errors)+1)
     plt.xticks(range(1,len(errors)+1))

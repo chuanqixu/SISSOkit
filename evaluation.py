@@ -38,32 +38,32 @@ def evaluate_expression(expression,data):
                     i+=len(power)
                     operand=OPND.pop()
                     if power=='^-1':
-                        OPND.append(np.power(operand,-1))
+                        OPND.append(np.power(operand,-1,dtype=np.float64))
                     elif power=='^2':
-                        OPND.append(np.power(operand,2))
+                        OPND.append(np.power(operand,2,dtype=np.float64))
                     elif power=='^3':
-                        OPND.append(np.power(operand,3))
+                        OPND.append(np.power(operand,3,dtype=np.float64))
                     elif power=='^6':
-                        OPND.append(np.power(operand,6))
+                        OPND.append(np.power(operand,6,dtype=np.float64))
                     OPTR.pop()
                 elif len(OPTR)>1 and OPTR[-1]=='(':
                     operand=OPND.pop()
                     if OPTR[-2]=='exp':
-                        OPND.append(np.exp(operand))
+                        OPND.append(np.exp(operand,dtype=np.float64))
                     elif OPTR[-2]=='exp-':
-                        OPND.append(np.exp(-operand))
+                        OPND.append(np.exp(-operand,dtype=np.float64))
                     elif OPTR[-2]=='sqrt':
-                        OPND.append(np.sqrt(operand))
+                        OPND.append(np.sqrt(operand,dtype=np.float64))
                     elif OPTR[-2]=='cbrt':
-                        OPND.append(np.cbrt(operand))
+                        OPND.append(np.cbrt(operand,dtype=np.float64))
                     elif OPTR[-2]=='log':
-                        OPND.append(np.log(operand))
+                        OPND.append(np.log(operand,dtype=np.float64))
                     elif OPTR[-2]=='abs':
-                        OPND.append(np.abs(operand))
+                        OPND.append(np.abs(operand,dtype=np.float64))
                     elif OPTR[-2]=='sin':
-                        OPND.append(np.sin(operand))
+                        OPND.append(np.sin(operand,dtype=np.float64))
                     elif OPTR[-2]=='cos':
-                        OPND.append(np.cos(operand))
+                        OPND.append(np.cos(operand,dtype=np.float64))
                     OPTR.pop()
                     OPTR.pop()
                 elif len(OPTR)==1 and OPTR[0]=='(':
@@ -128,111 +128,57 @@ def compute_using_descriptors(path=None,result=None,training=True,data=None,task
                 pred=value
     return pred
 
-'''
-def errors(result=None,training=True):
-    """
-    Return the errors of given class Result's data or a given data path.
-    """
-    """
-    if path:
-        result=Result(path)
-    if data_path:
-        data=pd.read_csv(data_path,sep=' ')
-    else:
-        data=result.data
-    samples_num=len(data)
-    property_test=data.iloc[:,1]
-    error=np.zeros(shape=(result.dimension,6))
-    for dimension in range(0,result.dimension):
-        value=0
-        for i in range(0,dimension+1):
-            value+=result.coefficients()[dimension][i]*evaluate_expression(result.descriptors()[dimension][i],data)
-        value+=result.intercepts()[dimension]
-        sorted_error=np.sort(np.abs(value-property_test))
-        error[dimension]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
-                            np.mean(sorted_error),
-                            sorted_error[math.ceil(samples_num*0.5)-1],
-                            sorted_error[math.ceil(samples_num*0.75)-1],
-                            sorted_error[math.ceil(samples_num*0.95)-1],
-                            sorted_error[-1]])
-    error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,result.dimension+1)))
-    return error
-    """
-    if training=True:
-        items_error=result.training_values()-result.property.values
-'''
 
-'''
-def item_errors(result=None,*item_index):
-    """
-    Return the errors of item_index data point in the data set.
-    """
-    
-    if path:
-        result=Result(path)
-    if data_path:
-        data=pd.read_csv(data_path,sep=' ')
-    else:
-        data=result.data
-    data=data.iloc[item_index]
-    property_test=data.iloc[1]
-    error=np.zeros(result.dimension)
-    for dimension in range(0,result.dimension):
-        value=0
-        for i in range(0,dimension+1):
-            value+=result.coefficients()[dimension][i]*evaluate_expression(result.descriptors()[dimension][i],data)
-        value+=result.intercepts()[dimension]
-        error[dimension]=value-property_test
-    return error
-'''
-
-def compute_errors(errors):
+def compute_errors(errors,samples_number=[]):
     """
     Return the errors of given numpy array errors (task_index, dimension, sample_index), if errors is 2D numpy array,
     or return the errors of given 1D numpy array error
     """
-    
+    # 1D [sample]
     if isinstance(errors[0],float):
-        error=np.zeros(shape=(1,6))
-        samples_num=len(errors)
-        sorted_error=np.sort(np.abs(errors))
-        error[0]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
-                                np.mean(sorted_error),
-                                sorted_error[math.ceil(samples_num*0.5)-1],
-                                sorted_error[math.ceil(samples_num*0.75)-1],
-                                sorted_error[math.ceil(samples_num*0.95)-1],
-                                sorted_error[-1]])
-        error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'])
+        errors=np.sort(np.abs(errors))
+        error=np.array([np.sqrt(np.mean(np.power(errors,2))),
+                                np.mean(errors),
+                                np.percentile(errors,25),
+                                np.percentile(errors,50),
+                                np.percentile(errors,75),
+                                np.percentile(errors,95),
+                                errors[-1]])
+        error=pd.Series(error,
+                        index=['RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'])
+    # 3D [task, dimension, sample] or [cv, dimension, sample]
     elif isinstance(errors,list) and isinstance(errors[0],np.ndarray):
         task_num=len(errors)
         dimension_num=len(errors[0])
         error=[]
-        for task in range(0,task_num):
-            error_t=np.zeros(shape=(dimension_num,6))
-            samples_num=errors[task].shape[1]
-            for dimension in range(0,dimension_num):
-                sorted_error=np.sort(np.abs(errors[task][dimension]))
-                error_t[dimension]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
-                                    np.mean(sorted_error),
-                                    sorted_error[math.ceil(samples_num*0.5)-1],
-                                    sorted_error[math.ceil(samples_num*0.75)-1],
-                                    sorted_error[math.ceil(samples_num*0.95)-1],
-                                    sorted_error[-1]])
-            error.append(pd.DataFrame(error_t,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,dimension_num+1))))
+        for task in range(task_num):
+            error.append(pd.DataFrame([compute_errors(errors[task][dimension]) for dimension in range(dimension_num)],
+                                    columns=['RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],
+                                    index=list(range(1,dimension_num+1))))
+    # 4D [cv, task, dimension, sample]
+    elif isinstance(errors,list) and isinstance(errors[0],list):
+        cv_num=len(errors)
+        task_num=len(errors[0])
+        dimension_num=len(errors[0][0])
+        error=[]
+        for cv in range(cv_num):
+            error_cv=[]
+            for task in range(task_num):
+                error_cv.append(pd.DataFrame([compute_errors(errors[cv][task][dimension]) for dimension in range(dimension_num)],
+                                            columns=['RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],
+                                            index=list(range(1,dimension_num+1))))
+            error.append(error_cv)
+    # 2D [dimension, sample]
     elif errors.ndim==2:
-        samples_num=len(errors[0])
-        dimensions=len(errors)
-        error=np.zeros(shape=(dimensions,6))
-        for dimension in range(0,dimensions):
-            sorted_error=np.sort(np.abs(errors[dimension]))
-            error[dimension]=np.array([np.sqrt(np.mean(np.power(sorted_error,2))),
-                                np.mean(sorted_error),
-                                sorted_error[math.ceil(samples_num*0.5)-1],
-                                sorted_error[math.ceil(samples_num*0.75)-1],
-                                sorted_error[math.ceil(samples_num*0.95)-1],
-                                sorted_error[-1]])
-        error=pd.DataFrame(error,columns=['RMSE','MAE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],index=list(range(1,dimensions+1)))
+        dimension_num=len(errors)
+        error=pd.DataFrame([compute_errors(errors[dimension]) for dimension in range(dimension_num)],
+                            columns=['RMSE','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'],
+                            index=list(range(1,dimension_num+1)))
     return error
+
+
+
+
 
 
 class Result(object):
@@ -290,6 +236,22 @@ class Result(object):
                 self.validation_data_task.append(self.validation_data.iloc[i:i+self.validation_samples_number[task]])
                 i+=self.validation_samples_number[task]
 
+    def __repr__(self):
+        text='#'*50+'\n'+'Result of SISSO\n'+'#'*50
+        text+='\nProperty Name: %s\nTask Number: %d\nRung: %d\nDimension: %d\nSubs_sis: %d\n'%(self.property_name,self.task_number,self.rung,self.dimension,self.subs_sis)
+        return text
+    
+    def baseline(self):
+        errors=np.sort((self.property-self.property.mean()).abs().values)
+        errors=np.array([self.property.mean(),
+                        self.property.std(),
+                        np.mean(errors),
+                        np.percentile(errors,25),
+                        np.percentile(errors,50),
+                        np.percentile(errors,75),
+                        np.percentile(errors,95),
+                        errors[-1]])
+        return pd.Series(errors,index=['mean','std','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'])
     
     def descriptors(self,path=None):
         """
@@ -381,11 +343,10 @@ class Result(object):
         
         Return numpy array (task_index, sample_index, dimension),
         """
-        if training==True:
-            if display_task==True:
-                return compute_using_descriptors(result=self)
-            else:
-                return np.hstack(compute_using_descriptors(result=self))
+        if display_task==True:
+            return compute_using_descriptors(result=self,training=training)
+        else:
+            return np.hstack(compute_using_descriptors(result=self,training=training))
     
     def errors(self,training=True,display_task=False):
         """
@@ -393,12 +354,14 @@ class Result(object):
         
         Return a numpy array [dimension, sample_index], whose value is error.
         """
-        if training==True:
-            if display_task==True:
-                pred=self.values(training=True,display_task=True)
-                return [pred[task]-self.property_task[task].values for task in range(0,self.task_number)]
+        if display_task==True:
+            pred=self.values(training=training,display_task=True)
+            return [pred[task]-self.property_task[task].values for task in range(0,self.task_number)]
+        else:
+            if training==True:
+                return self.values(training=training,display_task=False)-self.property.values
             else:
-                return self.values(training=True,display_task=False)-self.property.values
+                return self.values(training=training,display_task=False)-self.validation_data.iloc[:,1].values
     
     def total_errors(self,training=True,display_task=False):
         """
@@ -406,7 +369,7 @@ class Result(object):
         
         Return a pandas DataFrame [dimension, type of error].
         """
-        return compute_errors(self.errors(training=True,display_task=display_task))
+        return compute_errors(self.errors(training=training,display_task=display_task))
 
 
 
@@ -416,20 +379,31 @@ class Results(Result):
     Evaluate the cross validation results of SISSO.
     """
     
-    def __init__(self,current_path,property_name,cv_number):
+    def __init__(self,current_path,property_name,drop_index=[]):
         self.current_path=current_path
+        cv_names=sorted(list(filter(lambda x: x.startswith(property_name+'_cv'),os.listdir(current_path))),
+                        key=lambda x:int(x.split(property_name+'_cv')[-1]))
+        cv_number=len(cv_names)
+        dir_list=list(map(lambda cv_name:os.path.join(current_path,cv_name),cv_names))
+        self.cv_path=[dir_list[cv] for cv in range(cv_number) if cv not in drop_index]
         self.property_name=property_name
-        self.cv_number=cv_number
+        self.drop_index=drop_index
+        self.cv_number=cv_number-len(drop_index)
+        self.total_data=pd.read_csv(os.path.join(current_path,'train.dat'),sep=' ')
         
-        with open(os.path.join(self.current_path,'%s_cv0'%(self.property_name),'SISSO.in'),'r') as f:
-                input_file=f.read()
-                subs_sis=int(re.findall(r'subs_sis\s*=\s*(\d+)',input_file)[0])
-                rung=int(re.findall(r'rung\s*=\s*(\d+)',input_file)[0])
-                dimension=int(re.findall(r'desc_dim\s*=\s*(\d+)',input_file)[0])
-                operation_set=re.findall(r"opset\s*=\s*'(.+)'",input_file)
-                operation_set=re.split(r'[\(\)]+',operation_set[0])[1:-1]
-                task_number=int(re.findall(r'ntask\s*=\s*(\d+)',input_file)[0])
-                task_weighting=int(re.findall(r'task_weighting\s*=\s*(\d+)',input_file)[0])
+        with open(os.path.join(self.current_path,'cross_validation_info.dat'),'r') as f:
+            cv_info=json.load(f)
+        self.cross_validation_type=cv_info['cross_validation_type']
+        
+        with open(os.path.join(self.cv_path[0],'SISSO.in'),'r') as f:
+            input_file=f.read()
+            subs_sis=int(re.findall(r'subs_sis\s*=\s*(\d+)',input_file)[0])
+            rung=int(re.findall(r'rung\s*=\s*(\d+)',input_file)[0])
+            dimension=int(re.findall(r'desc_dim\s*=\s*(\d+)',input_file)[0])
+            operation_set=re.findall(r"opset\s*=\s*'(.+)'",input_file)
+            operation_set=re.split(r'[\(\)]+',operation_set[0])[1:-1]
+            task_number=int(re.findall(r'ntask\s*=\s*(\d+)',input_file)[0])
+            task_weighting=int(re.findall(r'task_weighting\s*=\s*(\d+)',input_file)[0])
         self.task_number=task_number
         self.task_weighting=task_weighting
         self.operation_set=operation_set
@@ -443,12 +417,13 @@ class Results(Result):
         self.validation_samples_number=[]
         self.property=[]
         self.validation_data=[]
-        for cv in range(0,self.cv_number):
-            self.data.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'train.dat'),sep=' '))
-            self.validation_data.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'validation.dat'),sep=' '))
-            self.property.append(pd.read_csv(os.path.join(current_path,'%s_cv%d'%(self.property_name,cv),'train.dat'),sep=' ').iloc[:,1])
-            self.materials.append(self.data[cv].iloc[:,0])
-            with open(os.path.join(self.current_path,'%s_cv0'%(self.property_name),'shuffle.dat'),'r') as f:
+        for cv_path in self.cv_path:
+            data=pd.read_csv(os.path.join(cv_path,'train.dat'),sep=' ')
+            self.data.append(data)
+            self.validation_data.append(pd.read_csv(os.path.join(cv_path,'validation.dat'),sep=' '))
+            self.property.append(data.iloc[:,1])
+            self.materials.append(data.iloc[:,0])
+            with open(os.path.join(cv_path,'shuffle.dat'),'r') as f:
                 shuffle=json.load(f)
             self.samples_number.append(shuffle['training_samples_number'])
             self.validation_samples_number.append(shuffle['validation_samples_number'])
@@ -480,31 +455,62 @@ class Results(Result):
         self.property_task=np.array(self.property_task)
         self.materials_task=np.array(self.materials_task)
     
+    def __getitem__(self,index):
+        if isinstance(index,slice):
+            return [Result(self.cv_path[i]) for i in range(index.start,index.stop)]
+        else:
+            return Result(self.cv_path[index])
+    
+    def __repr__(self):
+        text='#'*50+'\n'+'Cross Validation Results of SISSO\n'+'#'*50
+        with open(os.path.join(self.current_path,'cross_validation_info.dat'),'r') as f:
+            cv_info=json.load(f)
+        if 'shuffle_data_list' in cv_info:
+            text+=('\nCross Validation Type: %s\nShuffle Data List: '%cv_info['cross_validation_type']+str(cv_info['shuffle_data_list']))
+        else:
+            text+=('\nCross Validation Type: %s\nIteration: '%cv_info['cross_validation_type']+str(self.cv_number))
+        text+='\nProperty Name: %s\nTask Number: %d\nRung: %d\nDimension: %d\nSubs_sis: %d'%(self.property_name,self.task_number,self.rung,self.dimension,self.subs_sis)
+        return text
+    
+    def baseline(self):
+        total_property=self.total_data.iloc[:,1]
+        errors=np.sort((total_property-total_property.mean()).abs().values)
+        errors=np.array([total_property.mean(),
+                        total_property.std(),
+                        np.mean(errors),
+                        np.percentile(errors,25),
+                        np.percentile(errors,50),
+                        np.percentile(errors,75),
+                        np.percentile(errors,95),
+                        errors[-1]])
+        return pd.Series(errors,index=['mean','std','MAE','25%ile AE','50%ile AE','75%ile AE','95%ile AE','MaxAE'])
     
     def find_materials_in_validation(self,*idxs):
-        val_num=len(self.validation_data[0])
-        return [self.validation_data[int(index/val_num)].iloc[index%val_num,0] for index in idxs]
+        if self.cross_validation_type.startswith('leave'):
+            val_num=len(self.validation_data[0])
+            return ([self.validation_data[int(index/val_num)].iloc[index%val_num,0] for index in idxs],
+                    [int(self.cv_path[int(index/val_num)].split('cv')[-1]) for index in idxs])
     
     def descriptors(self):
         """
         Return a list whose index refers to the index of corss validation.
         Each item in the list is also a list, whose jth item is j+1 D descriptors.
         """
-        return [super(Results,self).descriptors(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv))) for cv in range(0,self.cv_number)]
+        return [super(Results,self).descriptors(path=cv_path) for cv_path in self.cv_path]
     
     def coefficients(self):
         """
         Return a list whose index refers to the index of corss validation.
         Each item in the list is also a list, whose jth item is j+1 D coefficients.
         """
-        return [super(Results,self).coefficients(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv))) for cv in range(0,self.cv_number)]
+        return [super(Results,self).coefficients(path=cv_path) for cv_path in self.cv_path]
     
     def intercepts(self):
         """
         Return a list whose index refers to the index of corss validation.
         Each item in the list is also a list, whose jth item is j+1 D intercepts.
         """
-        return [super(Results,self).intercepts(path=os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv))) for cv in range(0,self.cv_number)]
+        return [super(Results,self).intercepts(path=cv_path) for cv_path in self.cv_path]
     
     def features_percent(self):
         """
@@ -514,8 +520,8 @@ class Results(Result):
         """
         feature_percent=pd.DataFrame(columns=self.features_name,index=('percent',))
         feature_percent.iloc[0,:]=0
-        for cv in range(0,self.cv_number):
-            feature_space=pd.read_csv(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'feature_space','Uspace.name'),sep=' ',header=None).iloc[0:self.subs_sis,0]
+        for cv_path in self.cv_path:
+            feature_space=pd.read_csv(os.path.join(cv_path,'feature_space','Uspace.name'),sep=' ',header=None).iloc[0:self.subs_sis,0]
             for feature_name in self.features_name:
                 count=feature_space.str.contains(feature_name).sum()
                 feature_percent.loc['percent',feature_name]+=count
@@ -530,7 +536,7 @@ class Results(Result):
         count=0
         descriptor_index=np.zeros(self.cv_number)
         for cv in range(0,self.cv_number):
-            feature_space=pd.read_csv(os.path.join(self.current_path,'%s_cv%d'%(self.property_name,cv),'feature_space','Uspace.name'),sep=' ',header=None).iloc[0:self.subs_sis,0]
+            feature_space=pd.read_csv(os.path.join(self.cv_path[cv],'feature_space','Uspace.name'),sep=' ',header=None).iloc[0:self.subs_sis,0]
             try:
                 descriptor_index[cv]=feature_space.tolist().index(descriptor)+1
                 count+=1
@@ -545,6 +551,18 @@ class Results(Result):
         
         Return a list [cv_index], whose item is a 2D numpy array [dimension, sample_index],
         whose item is the value computed using descriptors found by SISSO.
+        """
+        if display_cv==True:
+            if display_task==True:
+                return [compute_using_descriptors(path=cv_path,
+                                        training=training)
+                for cv_path in self.cv_path]
+            else:
+                return [np.hstack(compute_using_descriptors(path=cv_path,
+                                        training=training))
+                for cv_path in self.cv_path]
+        else:
+            return np.hstack(self.values(training=training,display_cv=True,display_task=False))
         """
         if display_cv==True:
             if training==True:
@@ -565,6 +583,7 @@ class Results(Result):
                     for cv in range(0,self.cv_number)]
         else:
             return np.hstack(self.values(training=training,display_cv=True,display_task=False))
+        """
     
     def errors(self,training=True,display_cv=False,display_task=False):
         """
@@ -574,15 +593,15 @@ class Results(Result):
         Return a list [cv_index],
         whose item is a 2D numpy array [dimension, sample_index].
         """
-        if display_cv==True:
-            if training==True:
-                if display_task==True:
+        if display_cv:
+            if training:
+                if display_task:
                     error=[]
                     pred=self.values(training=True,display_cv=True,display_task=True)
                     for cv in range(0,self.cv_number):
                         error_cv=[]
                         for task in range(0,self.task_number):
-                            error_cv.append(pred[cv][task]-self.property_task[cv][task].values)
+                            error_cv.append(pred[cv][task]-self.property_task[cv][task])
                         error.append(error_cv)
                     return error
                 else:
@@ -590,7 +609,7 @@ class Results(Result):
                     return [np.hstack(pred[cv])-np.hstack(self.property_task[cv])
                             for cv in range(0,self.cv_number)]
             else:
-                if display_task==True:
+                if display_task:
                     error=[]
                     pred=self.values(training=False,display_cv=True,display_task=True)
                     for cv in range(0,self.cv_number):
@@ -604,10 +623,29 @@ class Results(Result):
                     return [(np.hstack(pred[cv])-self.validation_data[cv].iloc[:,1].values)
                             for cv in range(0,self.cv_number)]
         else:
-            return np.hstack(self.errors(training=training,display_cv=True,display_task=False))
+            if display_task:
+                errors_cv_t=self.errors(training=training,display_cv=True,display_task=True)
+                errors=[]
+                for task in range(self.task_number):
+                    errors_t=errors_cv_t[0][task]
+                    for cv in range(1,self.cv_number):
+                        errors_t=np.hstack((errors_t,errors_cv_t[cv][task]))
+                    errors.append(errors_t)
+                return errors
+            else:
+                return np.hstack(self.errors(training=training,display_cv=True,display_task=False))
         
-    def total_errors(self,training=True):
+    def total_errors(self,training=True,display_cv=False,display_task=False):
         """
         Return the errors over whole cross validation.
         """
-        return compute_errors(self.errors(training=training,display_cv=False,display_task=False))
+        if training:
+            return compute_errors(self.errors(training=training,display_cv=display_cv,display_task=display_task),
+                                samples_number=self.samples_number)
+        else:
+            return compute_errors(self.errors(training=training,display_cv=display_cv,display_task=display_task),
+                                samples_number=self.validation_samples_number)
+        
+    def drop(self,index=[]):
+        index+=self.drop_index
+        return Results(self.current_path,self.property_name,index)

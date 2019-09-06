@@ -138,8 +138,14 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
             else:
                 json.dump({'cross_validation_type':'leave-%d%%-out'%int(frac*100),'iteration_times':num_iter},f)
 
+    num_out=[]
+    total_samples_number=0
+    for task in range(task_number):
+        total_samples_number+=samples_number[task]
+    if num_out:
+        frac=num_out/total_samples_number
+    
     if frac:
-        num_out=[]
         for task in range(0,task_number):
             num_out.append(round(samples_number[task]*frac))
     
