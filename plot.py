@@ -49,10 +49,10 @@ def property_vs_prediction(dimension,*results,training=True,unit_name=None,fonts
             property_values=np.hstack([result.property[cv].values for result in results for cv in range(0,result.cv_number)])
         else:
             property_values=np.hstack([result.validation_data[cv].iloc[:,1].values.tolist() for result in results for cv in range(0,result.cv_number)])
-        prediction_value=np.hstack([result.values(training=training)[dimension,:] for result in results])-property_values
+        prediction_value=np.hstack([result.predictions(training=training)[dimension,:] for result in results])-property_values
     else:
         property_values=np.hstack([result.property.values for result in results])
-        prediction_value=np.hstack([result.values(training=training)[dimension,:] for result in results])-property_values
+        prediction_value=np.hstack([result.predictions(training=training)[dimension,:] for result in results])-property_values
     plt.scatter(property_values,prediction_value,**kw)
     if unit_name:
         plt.xlabel('%s in data set %s'%(results[0].property_name,'['+unit_name+']'),fontsize=fontsize)
@@ -83,7 +83,7 @@ def hist_and_box_plot(dimension,*results,training=True,unit_name=None,fontsize=2
         plt.scatter(marker_x,errors[selected_error],s=50,zorder=1,marker=marker[selected_error],label=selected_error)
     plt.legend()
     
-def abs_errors_vs_dimension(*results,training=True,unit_name=None,fontsize=20,selected_errors=None,label=None,**kw):
+def abs_errors_vs_dimension(*results,training=True,unit_name=None,fontsize=20,selected_errors=None,label='',**kw):
     """
     Plot the histogram of absolute errors with box plot for errors
     """
@@ -103,3 +103,12 @@ def abs_errors_vs_dimension(*results,training=True,unit_name=None,fontsize=20,se
     plt.xlabel('Dimension of the descriptor',fontsize=fontsize)
     plt.xlim(0,len(errors)+1)
     plt.xticks(range(1,len(errors)+1))
+
+def boxplot(result,training=True,unit_name=None,fontsize=20,**kwargs):
+    plt.boxplot([np.abs(result.errors(training=training))[dimension] for dimension in range(result.dimension)],
+                **kwargs)
+    if unit_name:
+        plt.ylabel('Errors %s'%('['+unit_name+']'),fontsize=fontsize)
+    else:
+        plt.ylabel('Errors',fontsize=fontsize)
+    plt.xlabel('Dimension',fontsize=fontsize)

@@ -115,7 +115,6 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
         data_list.append(list(range(i,i+sample_num)))
         i+=sample_num
     
-    
     try:
         if os.path.exists(os.path.join(target_path,'%s_cv'%property_name)):
             print('Directory already exists.\nDo you want to remove the directory?')
