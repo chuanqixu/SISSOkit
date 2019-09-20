@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import SISSO_analysis.evaluation as evl
-import SISSO_analysis.cross_validation as cv
-import SISSO_analysis.plot as plot
+from . import evaluation as evl
+from . import cross_validation as cv
 import numpy as np
 import functools
 
@@ -44,11 +43,11 @@ def property_vs_prediction(dimension,*results,training=True,unit_name=None,fonts
     Plot the scatter plot of property_vs_prediction
     """
     dimension-=1
-    if isinstance(results[0],evl.Results):
+    if isinstance(results[0],evl.RegressionCV):
         if training:
-            property_values=np.hstack([result.property[cv].values for result in results for cv in range(0,result.cv_number)])
+            property_values=np.hstack([result.property[cv].values for result in results for cv in range(0,result.n_cv)])
         else:
-            property_values=np.hstack([result.validation_data[cv].iloc[:,1].values.tolist() for result in results for cv in range(0,result.cv_number)])
+            property_values=np.hstack([result.validation_data[cv].iloc[:,1].values.tolist() for result in results for cv in range(0,result.n_cv)])
         prediction_value=np.hstack([result.predictions(training=training)[dimension,:] for result in results])-property_values
     else:
         property_values=np.hstack([result.property.values for result in results])
