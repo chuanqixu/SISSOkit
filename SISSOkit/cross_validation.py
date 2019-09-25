@@ -1,15 +1,49 @@
-import pandas as pd
 import os
 import shutil
 import random
 import math
-import numpy as np
 import string
 import sys
 import json
 import re
 
-def fold(current_path,target_path,property_name,num_fold):
+import numpy as np
+import pandas as pd
+
+
+
+
+
+def kfold(current_path,target_path,property_name,num_fold):
+    r"""
+        Generates K-fold cross validation files for SISSO.
+        You should at least contains two files necessary for SISSO: ``SISSO.in`` and ``train.dat`` before
+        you use this function. All the arguments in ``SISSO.in`` will remain the same in CV files except
+        ``nsample`` will change to the correct nsample in ``train.dat``.
+        
+        This function will generate a directory contains totally ``num_fold`` CV directories
+        ,and ``cross_validation_info.dat`` containing the information about CV type (i.e. K-fold) and shuffle list, 
+        In each CV directory, there will be a new ``validation.dat`` contains the data left out from ``train.dat``,
+        and ``shuffle.dat`` contains sample index and number of ``train.dat`` and ``validation.dat``, noting that
+        the index is the index in the original ``train.dat``, i.e. the index in the whole data set.
+
+        You can directly run SISSO on this CV files if original ``SISSO.in`` is correctly set.
+        
+        Arguments:
+            current_path (string):  
+                path to SISSO file on which you want to do cross validation.
+                It should at least contains two files necessary for SISSO: ``SISSO.in`` and ``train.dat``.
+            
+            target_path (string):  
+                path to newly generated cross validation directory.
+            
+            property_name (string):  
+                the name of the property you want to predict.
+            
+            num_fold (int):  
+                K of K-fold cross validation.
+    """
+    
     with open(os.path.join(current_path,'SISSO.in'),'r') as f:
             input_file=f.read()
             task_number=int(re.findall(r'ntask\s*=\s*(\d+)',input_file)[0])
@@ -17,7 +51,7 @@ def fold(current_path,target_path,property_name,num_fold):
             samples_number=re.split(r'[, ]+',samples_number)
             samples_number=list(map(int,samples_number))
     
-    data_total=pd.read_csv(os.path.join(current_path,'train.dat'),sep=' ')
+    data_total=pd.read_csv(os.path.join(current_path,'train.dat'),sep=r'\s+')
     
     i=1
     data_list=[]
@@ -44,7 +78,7 @@ def fold(current_path,target_path,property_name,num_fold):
     finally:
         os.mkdir(os.path.join(target_path,'%s_cv'%property_name))
         target_path=os.path.join(target_path,'%s_cv'%property_name)
-        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=' ')
+        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=r'\s+')
         with open(os.path.join(target_path,'cross_validation_info.dat'),'w') as f:
             json.dump({'cross_validation_type':'%d-fold'%num_fold,'shuffle_data_list':data_list},f)
 
@@ -82,8 +116,8 @@ def fold(current_path,target_path,property_name,num_fold):
         
         data_train=data_total.iloc[np.hstack(train_list)-1]
         data_val=data_total.iloc[np.hstack(val_list)-1]
-        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=' ')
-        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=' ')
+        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=r'\s+')
+        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=r'\s+')
         
         with open(os.path.join(target_path,property_name+'_cv%d'%i,'SISSO.in'),'r') as f:
             lines=f.readlines()
@@ -96,6 +130,43 @@ def fold(current_path,target_path,property_name,num_fold):
 
 
 def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
+    r"""
+        Generates leave-N-out cross validation files for SISSO.
+        You should at least contains two files necessary for SISSO: ``SISSO.in`` and ``train.dat`` before
+        you use this function. All the arguments in ``SISSO.in`` will remain the same in CV files except
+        ``nsample`` will change to the correct nsample in ``train.dat``.
+        
+        This function will generate a directory contains totally ``num_iter`` CV directories
+        ,and ``cross_validation_info.dat`` containing the information about CV type (i.e. leave-out), shuffle list and iteration times, 
+        In each CV directory, there will be a new ``validation.dat`` contains the data left out from ``train.dat``,
+        and ``shuffle.dat`` contains sample index and number of ``train.dat`` and ``validation.dat``, noting that
+        the index is the index in the original ``train.dat``, i.e. the index in the whole data set.
+
+        You can directly run SISSO on this CV files if original ``SISSO.in`` is correctly set.
+        
+        Arguments:
+            current_path (string):  
+                path to SISSO file on which you want to do cross validation.
+                It should at least contains two files necessary for SISSO: ``SISSO.in`` and ``train.dat``.
+            
+            target_path (string):  
+                path to newly generated cross validation directory.
+            
+            property_name (string):  
+                the name of the property you want to predict.
+            
+            num_iter (int):  
+                the number of  cross validation files.
+            
+            frac (float):  
+                the percentage of leave out samples. You should only pass either 
+                ``frac`` or ``num_out`` to this function.
+            
+            num_out (int):  
+                the number of leave out samples. You should only pass either 
+                ``frac`` or ``num_out`` to this function.
+    """
+    
     if num_out and frac:
         print("Please input one of num_out and frac!")
         return None
@@ -107,7 +178,7 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
             samples_number=re.split(r'[, ]+',samples_number)
             samples_number=list(map(int,samples_number))
     
-    data_total=pd.read_csv(os.path.join(current_path,'train.dat'),sep=' ')
+    data_total=pd.read_csv(os.path.join(current_path,'train.dat'),sep=r'\s+')
     
     i=1
     data_list=[]
@@ -130,7 +201,7 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
     finally:
         os.mkdir(os.path.join(target_path,'%s_cv'%property_name))
         target_path=os.path.join(target_path,'%s_cv'%property_name)
-        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=' ')
+        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=r'\s+')
         with open(os.path.join(target_path,'cross_validation_info.dat'),'w') as f:
             if num_out:
                 json.dump({'cross_validation_type':'leave-%d-out'%num_out,'iteration_times':num_iter},f)
@@ -163,8 +234,8 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
         val_len=list(map(len,val_list))
         data_train=data_total.iloc[np.hstack(train_list)-1]
         data_val=data_total.iloc[np.hstack(val_list)-1]
-        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=' ')
-        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=' ')
+        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=r'\s+')
+        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=r'\s+')
         
         with open(os.path.join(target_path,property_name+'_cv%d'%i,'shuffle.dat'),'w') as f:
             json.dump({'training_list':train_list,'training_samples_number':train_len,'validation_list':val_list,'validation_samples_number':val_len},f)

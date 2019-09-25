@@ -16,9 +16,16 @@ For SISSO code, please see [SISSO](https://github.com/rouyang2017/SISSO)
 
 ### Dependencies
 
+1. numpy
+2. pandas
+3. matplotlib
+
 ### Installation
 
-pip will come in the future.
+Using commend line:
+```
+pip install SISSOkit
+```
 
 ### Quick Report
 

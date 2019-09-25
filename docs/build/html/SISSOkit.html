@@ -1,0 +1,1211 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SISSOkit package &mdash; SISSOkit 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SISSOkit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">SISSOkit package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-SISSOkit.cross_validation">SISSOkit.cross_validation module</a></li>
+<li><a class="reference internal" href="#module-SISSOkit.evaluation">SISSOkit.evaluation module</a></li>
+<li><a class="reference internal" href="#module-SISSOkit.notebook">SISSOkit.notebook module</a></li>
+<li><a class="reference internal" href="#module-SISSOkit.plot">SISSOkit.plot module</a></li>
+<li><a class="reference internal" href="#module-SISSOkit.utils">SISSOkit.utils module</a></li>
+<li><a class="reference internal" href="#module-SISSOkit">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SISSOkit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>SISSOkit package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/SISSOkit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sissokit-package">
+<h1>SISSOkit package<a class="headerlink" href="#sissokit-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-SISSOkit.cross_validation">
+<span id="sissokit-cross-validation-module"></span><h2>SISSOkit.cross_validation module<a class="headerlink" href="#module-SISSOkit.cross_validation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="SISSOkit.cross_validation.kfold">
+<code class="sig-prename descclassname">SISSOkit.cross_validation.</code><code class="sig-name descname">kfold</code><span class="sig-paren">(</span><em class="sig-param">current_path</em>, <em class="sig-param">target_path</em>, <em class="sig-param">property_name</em>, <em class="sig-param">num_fold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/cross_validation.html#kfold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.cross_validation.kfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates K-fold cross validation files for SISSO.
+You should at least contains two files necessary for SISSO: <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> and <code class="docutils literal notranslate"><span class="pre">train.dat</span></code> before
+you use this function. All the arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> will remain the same in CV files except
+<code class="docutils literal notranslate"><span class="pre">nsample</span></code> will change to the correct nsample in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+<p>This function will generate a directory contains totally <code class="docutils literal notranslate"><span class="pre">num_fold</span></code> CV directories
+,and <code class="docutils literal notranslate"><span class="pre">cross_validation_info.dat</span></code> containing the information about CV type (i.e. K-fold) and shuffle list, 
+In each CV directory, there will be a new <code class="docutils literal notranslate"><span class="pre">validation.dat</span></code> contains the data left out from <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">shuffle.dat</span></code> contains sample index and number of <code class="docutils literal notranslate"><span class="pre">train.dat</span></code> and <code class="docutils literal notranslate"><span class="pre">validation.dat</span></code>, noting that
+the index is the index in the original <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>, i.e. the index in the whole data set.</p>
+<p>You can directly run SISSO on this CV files if original <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> is correctly set.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string):  </dt><dd><p>path to SISSO file on which you want to do cross validation.
+It should at least contains two files necessary for SISSO: <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> and <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+</dd>
+<dt>target_path (string):  </dt><dd><p>path to newly generated cross validation directory.</p>
+</dd>
+<dt>property_name (string):  </dt><dd><p>the name of the property you want to predict.</p>
+</dd>
+<dt>num_fold (int):  </dt><dd><p>K of K-fold cross validation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.cross_validation.leave_out">
+<code class="sig-prename descclassname">SISSOkit.cross_validation.</code><code class="sig-name descname">leave_out</code><span class="sig-paren">(</span><em class="sig-param">current_path</em>, <em class="sig-param">target_path</em>, <em class="sig-param">property_name</em>, <em class="sig-param">num_iter</em>, <em class="sig-param">frac=0</em>, <em class="sig-param">num_out=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/cross_validation.html#leave_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.cross_validation.leave_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates leave-N-out cross validation files for SISSO.
+You should at least contains two files necessary for SISSO: <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> and <code class="docutils literal notranslate"><span class="pre">train.dat</span></code> before
+you use this function. All the arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> will remain the same in CV files except
+<code class="docutils literal notranslate"><span class="pre">nsample</span></code> will change to the correct nsample in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+<p>This function will generate a directory contains totally <code class="docutils literal notranslate"><span class="pre">num_iter</span></code> CV directories
+,and <code class="docutils literal notranslate"><span class="pre">cross_validation_info.dat</span></code> containing the information about CV type (i.e. leave-out), shuffle list and iteration times, 
+In each CV directory, there will be a new <code class="docutils literal notranslate"><span class="pre">validation.dat</span></code> contains the data left out from <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">shuffle.dat</span></code> contains sample index and number of <code class="docutils literal notranslate"><span class="pre">train.dat</span></code> and <code class="docutils literal notranslate"><span class="pre">validation.dat</span></code>, noting that
+the index is the index in the original <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>, i.e. the index in the whole data set.</p>
+<p>You can directly run SISSO on this CV files if original <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> is correctly set.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string):  </dt><dd><p>path to SISSO file on which you want to do cross validation.
+It should at least contains two files necessary for SISSO: <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code> and <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+</dd>
+<dt>target_path (string):  </dt><dd><p>path to newly generated cross validation directory.</p>
+</dd>
+<dt>property_name (string):  </dt><dd><p>the name of the property you want to predict.</p>
+</dd>
+<dt>num_iter (int):  </dt><dd><p>the number of  cross validation files.</p>
+</dd>
+<dt>frac (float):  </dt><dd><p>the percentage of leave out samples. You should only pass either 
+<code class="docutils literal notranslate"><span class="pre">frac</span></code> or <code class="docutils literal notranslate"><span class="pre">num_out</span></code> to this function.</p>
+</dd>
+<dt>num_out (int):  </dt><dd><p>the number of leave out samples. You should only pass either 
+<code class="docutils literal notranslate"><span class="pre">frac</span></code> or <code class="docutils literal notranslate"><span class="pre">num_out</span></code> to this function.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SISSOkit.evaluation">
+<span id="sissokit-evaluation-module"></span><h2>SISSOkit.evaluation module<a class="headerlink" href="#module-SISSOkit.evaluation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="SISSOkit.evaluation.Classification">
+<em class="property">class </em><code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">Classification</code><span class="sig-paren">(</span><em class="sig-param">current_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic class for evaluating the results of classification. You should instantiate it first.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string):  </dt><dd><p>path to the directory of the SISSO result.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Its attributes contain all the input arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code>, information about <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>
+and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>.</p>
+<dl class="method">
+<dt id="SISSOkit.evaluation.Classification.descriptors">
+<em class="property">property </em><code class="sig-name descname">descriptors</code><a class="headerlink" href="#SISSOkit.evaluation.Classification.descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Classification.evaluate_expression">
+<code class="sig-name descname">evaluate_expression</code><span class="sig-paren">(</span><em class="sig-param">expression</em>, <em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Classification.evaluate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Classification.evaluate_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value computed using given expression over data in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+<p>Returns the values using <code class="docutils literal notranslate"><span class="pre">expression</span></code> to compute <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>expression (string):  </dt><dd><p>arithmetic expression. 
+The expression should be in the same form as the descriptor in file <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>,
+i.e., every operation should be enclosed in parenthesis, like (exp((A+B))/((C*D))^2).</p>
+</dd>
+<dt>data (pandas.DataFrame):  </dt><dd><p>the data you want to compute, with samples as index and features as columns.
+The features name should be correspondent to the operands in expression.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.Series: values computed using <code class="docutils literal notranslate"><span class="pre">expression</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Classification.features_percent">
+<code class="sig-name descname">features_percent</code><span class="sig-paren">(</span><em class="sig-param">descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Classification.features_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Classification.features_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the percentages of each feature in top subs_sis 1D descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Classification.get_descriptors">
+<code class="sig-name descname">get_descriptors</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Classification.get_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Classification.get_descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SISSOkit.evaluation.ClassificationCV">
+<em class="property">class </em><code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">ClassificationCV</code><span class="sig-paren">(</span><em class="sig-param">current_path</em>, <em class="sig-param">property_name=None</em>, <em class="sig-param">drop_index=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#ClassificationCV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SISSOkit.evaluation.Classification" title="SISSOkit.evaluation.Classification"><code class="xref py py-class docutils literal notranslate"><span class="pre">SISSOkit.evaluation.Classification</span></code></a></p>
+<p>Basic class for evaluating the cross validation results of classification.
+You should instantiate it first if you want to analyze CV results.
+You can use index to select a specific result from total CV results, and it will return
+a instance of <a class="reference internal" href="#SISSOkit.evaluation.Classification" title="SISSOkit.evaluation.Classification"><code class="xref py py-class docutils literal notranslate"><span class="pre">Classification</span></code></a>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string):  </dt><dd><p>path to the directory of the cross validation results.</p>
+</dd>
+<dt>property_name (string):  </dt><dd><p>specifies the property name of your CV results.</p>
+</dd>
+<dt>drop_index (list):  </dt><dd><p>specifies which CV results you don’t want to consider.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should use code in <code class="docutils literal notranslate"><span class="pre">cross_validation.py</span></code> to generate the CV files, otherwise the format
+may be wrong.</p>
+<p>Its attributes contain all the input arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code>, information about <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>,
+<code class="docutils literal notranslate"><span class="pre">validation.dat</span></code>, and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>.</p>
+</div>
+<dl class="method">
+<dt id="SISSOkit.evaluation.ClassificationCV.descriptor_percent">
+<code class="sig-name descname">descriptor_percent</code><span class="sig-paren">(</span><em class="sig-param">descriptor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#ClassificationCV.descriptor_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV.descriptor_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the percent of given descriptor appearing in the cross validation top subs_sis descriptors,
+and return the appearing index in the descriptor space.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>descriptor (string):  </dt><dd><p>the descriptor you want to check.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.ClassificationCV.descriptors">
+<em class="property">property </em><code class="sig-name descname">descriptors</code><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV.descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors. The first index is cross validation index.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.ClassificationCV.drop">
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param">index=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#ClassificationCV.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop some CV results.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>index (list):  </dt><dd><p>contain the CV index which you want to drop.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>An instance of RegressionCV that drop the results in CV index.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.ClassificationCV.features_percent">
+<code class="sig-name descname">features_percent</code><span class="sig-paren">(</span><em class="sig-param">descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#ClassificationCV.features_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV.features_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the percent of each feature in the top subs_sis descriptors.
+There are total n_cv*subs_sis descriptors,
+the feature percent is the percent over these descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.ClassificationCV.find_materials_in_validation">
+<code class="sig-name descname">find_materials_in_validation</code><span class="sig-paren">(</span><em class="sig-param">*idxs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#ClassificationCV.find_materials_in_validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.ClassificationCV.find_materials_in_validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the samples’ names and in which CV result they are.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>idx (integer):  </dt><dd><p>index of the sample.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>the samples’ names and in which CV result they are.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SISSOkit.evaluation.Regression">
+<em class="property">class </em><code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">Regression</code><span class="sig-paren">(</span><em class="sig-param">current_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic class for evaluating the results of regression. You should instantiate it first.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string): </dt><dd><p>path to the directory of the SISSO result.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Its attributes contain all the input arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code>, information about <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>
+and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>.</p>
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.baseline">
+<em class="property">property </em><code class="sig-name descname">baseline</code><a class="headerlink" href="#SISSOkit.evaluation.Regression.baseline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the baseline, i.e., the errors with predicting every property using the mean value of the property in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.check_predictions">
+<code class="sig-name descname">check_predictions</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">multiply_coefficients=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.check_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.check_predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check predictions of each descriptor.</p>
+<dl class="simple">
+<dt>Arguments:  </dt><dd><dl class="simple">
+<dt>dimension (int):</dt><dd><p>dimension of the descriptor.</p>
+</dd>
+<dt>multiply_coefficients (bool):  </dt><dd><p>whether it should be multiplied by coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns</dt><dd><p>Predictions of each descriptor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.coefficients">
+<em class="property">property </em><code class="sig-name descname">coefficients</code><a class="headerlink" href="#SISSOkit.evaluation.Regression.coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns coefficients. The index order is task, dimension of model, dimension descriptor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.descriptors">
+<em class="property">property </em><code class="sig-name descname">descriptors</code><a class="headerlink" href="#SISSOkit.evaluation.Regression.descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.errors">
+<code class="sig-name descname">errors</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_task=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.errors" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns errors.</dt><dd><p>The index order is dimension, sample if <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the errors contain index of task or not.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.evaluate_expression">
+<code class="sig-name descname">evaluate_expression</code><span class="sig-paren">(</span><em class="sig-param">expression</em>, <em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.evaluate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.evaluate_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value computed using given expression over data in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+<p>Returns the values using <code class="docutils literal notranslate"><span class="pre">expression</span></code> to compute <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<dl>
+<dt>Arguments:</dt><dd><p>expression (string): 
+arithmetic expression.</p>
+<blockquote>
+<div><p>The expression should be in the same form as the descriptor in file <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>,
+i.e., every operation should be enclosed in parenthesis, like (exp((A+B))/((C*D))^2).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>data (pandas.DataFrame): </dt><dd><p>the data you want to compute, with samples as index and features as columns.
+The features name should be correspondent to the operands in expression.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.Series: values computed using <code class="docutils literal notranslate"><span class="pre">expression</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.features_percent">
+<code class="sig-name descname">features_percent</code><span class="sig-paren">(</span><em class="sig-param">descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.features_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.features_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the percentages of each feature in top subs_sis 1D descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.get_coefficients">
+<code class="sig-name descname">get_coefficients</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.get_coefficients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.get_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns coefficients. The index order is task, dimension of model, dimension descriptor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.get_descriptors">
+<code class="sig-name descname">get_descriptors</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.get_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.get_descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.get_intercepts">
+<code class="sig-name descname">get_intercepts</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.get_intercepts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.get_intercepts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns intercepts. The index order is task, dimension of model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.intercepts">
+<em class="property">property </em><code class="sig-name descname">intercepts</code><a class="headerlink" href="#SISSOkit.evaluation.Regression.intercepts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns intercepts. The index order is task, dimension of model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">tasks=None</em>, <em class="sig-param">dimensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the predictions of <code class="docutils literal notranslate"><span class="pre">data</span></code> using the models found by SISSO.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>data (string or pandas.DataFrame): </dt><dd><p>the path of the data or the data you want to compute. 
+If it is <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, it will be recognized as path to the data and 
+use <code class="docutils literal notranslate"><span class="pre">data=pd.read_csv(data,sep=r'\s+')</span></code> to read the data, so remember to use space to seperate the data.
+Otherwise it should be <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt>tasks (None or list):  </dt><dd><p>specifies which sample should use which task of model to compute.
+It should be task=[ [task_index, [sample_indices] ] ].
+For example, [ [1, [1,3]], [2, [2,4,5]] ] means sample 1 and 3 will be computed using task 1 model,
+and sample 2, 4 and 5 will be computed using task 2 model.
+If it is None, then compute all samples with task 1 model.</p>
+</dd>
+<dt>dimensions (None or list):  </dt><dd><p>specifies which dimension of desctiptor will be used.
+For example, [2,5] means only compute using 2D and 5D models.
+If it is None, then compute all samples with all dimension models.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Values computed using models found by SISSO.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.predictions">
+<code class="sig-name descname">predictions</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_task=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns predictions.
+The index order is dimension, sample if <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the predictions contain index of task or not.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Predictions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.Regression.total_errors">
+<code class="sig-name descname">total_errors</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_task=False</em>, <em class="sig-param">display_baseline=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.total_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.total_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute errors.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the errors contain index of task or not.</p>
+</dd>
+<dt>display_baseline (bool):  </dt><dd><p>determines whether display baseline</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>RMSE, MAE, 25%ile AE, 50%ile AE, 75%ile AE, 95%ile AE, MaxAE of given errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SISSOkit.evaluation.RegressionCV">
+<em class="property">class </em><code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">RegressionCV</code><span class="sig-paren">(</span><em class="sig-param">current_path</em>, <em class="sig-param">property_name=None</em>, <em class="sig-param">drop_index=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SISSOkit.evaluation.Regression" title="SISSOkit.evaluation.Regression"><code class="xref py py-class docutils literal notranslate"><span class="pre">SISSOkit.evaluation.Regression</span></code></a></p>
+<p>Basic class for evaluating the cross validation results of regression.
+You should instantiate it first if you want to analyze CV results.
+You can use index to select a specific result from total CV results, and it will return
+a instance of <a class="reference internal" href="#SISSOkit.evaluation.Regression" title="SISSOkit.evaluation.Regression"><code class="xref py py-class docutils literal notranslate"><span class="pre">Regression</span></code></a>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>current_path (string):  </dt><dd><p>path to the directory of the cross validation results.</p>
+</dd>
+<dt>property_name (string):  </dt><dd><p>specifies the property name of your CV results.</p>
+</dd>
+<dt>drop_index (list):  </dt><dd><p>specifies which CV results you don’t want to consider.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should use code in <code class="docutils literal notranslate"><span class="pre">cross_validation.py</span></code> to generate the CV files, otherwise the format
+may be wrong.</p>
+<p>Its attributes contain all the input arguments in <code class="docutils literal notranslate"><span class="pre">SISSO.in</span></code>, information about <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>,
+<code class="docutils literal notranslate"><span class="pre">validation.dat</span></code>, and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>.</p>
+</div>
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.baseline">
+<em class="property">property </em><code class="sig-name descname">baseline</code><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.baseline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the baseline, i.e., the errors with predicting every property using the mean value of the property in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.check_predictions">
+<code class="sig-name descname">check_predictions</code><span class="sig-paren">(</span><em class="sig-param">cv_idx</em>, <em class="sig-param">dimension</em>, <em class="sig-param">training=True</em>, <em class="sig-param">multiply_coefficients=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.check_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.check_predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check predictions of each descriptor.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>cv_idx (integer):  </dt><dd><p>specifies which CV result you want to check.</p>
+</dd>
+<dt>dimension (int):</dt><dd><p>dimension of the descriptor.</p>
+</dd>
+<dt>training (bool):  </dt><dd><p>whether it is training.</p>
+</dd>
+<dt>multiply_coefficients (bool):  </dt><dd><p>whether it should be multiplied by coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns</dt><dd><p>Predictions of each descriptor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.coefficients">
+<em class="property">property </em><code class="sig-name descname">coefficients</code><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns coefficients. The index order is CV index, task, dimension of model, dimension descriptor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.descriptor_percent">
+<code class="sig-name descname">descriptor_percent</code><span class="sig-paren">(</span><em class="sig-param">descriptor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.descriptor_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.descriptor_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the percent of given descriptor appearing in the cross validation top subs_sis descriptors,
+and return the appearing index in the descriptor space.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>descriptor (string):  </dt><dd><p>the descriptor you want to check.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.descriptors">
+<em class="property">property </em><code class="sig-name descname">descriptors</code><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns descriptors. The first index is cross validation index.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.drop">
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param">index=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop some CV results.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>index (list):  </dt><dd><p>contain the CV index which you want to drop.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>An instance of RegressionCV that drop the results in CV index.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.errors">
+<code class="sig-name descname">errors</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_cv=False</em>, <em class="sig-param">display_task=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns errors.
+The index order is dimension, sample if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+or CV index, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or CV index, task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the errors contain index of task or not.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.features_percent">
+<code class="sig-name descname">features_percent</code><span class="sig-paren">(</span><em class="sig-param">descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.features_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.features_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the percent of each feature in the top subs_sis descriptors.
+There are total n_cv*subs_sis descriptors,
+the feature percent is the percent over these descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.find_materials_in_validation">
+<code class="sig-name descname">find_materials_in_validation</code><span class="sig-paren">(</span><em class="sig-param">*idxs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.find_materials_in_validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.find_materials_in_validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the samples’ names and in which CV result they are.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>idx (integer):  </dt><dd><p>index of the sample.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>the samples’ names and in which CV result they are.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.find_max_error">
+<code class="sig-name descname">find_max_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.find_max_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.find_max_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the samples’ names and in which CV result they are that contribute to the maxAE.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.intercepts">
+<em class="property">property </em><code class="sig-name descname">intercepts</code><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.intercepts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns intercepts. The index order is CV index, task, dimension of model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">cv_index=None</em>, <em class="sig-param">tasks=None</em>, <em class="sig-param">dimensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the predictions of <code class="docutils literal notranslate"><span class="pre">data</span></code> using the models found by SISSO.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>data (string or pandas.DataFrame):  </dt><dd><p>the path of the data or the data you want to compute. 
+If it is <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, it will be recognized as path to the data and 
+use <code class="docutils literal notranslate"><span class="pre">data=pd.read_csv(data,sep=r'\s+')</span></code> to read the data, so remember to use space to seperate the data.
+Otherwise it should be <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt>cv_index (None or list): </dt><dd><p>specifies which CV should be included.
+For example, [1,5] means CV1 and CV5 will be included.
+If it is None, then compute all CV results.</p>
+</dd>
+<dt>tasks (None or list):  </dt><dd><p>specifies which sample should use which task of model to compute.
+It should be task=[ [task_index, [sample_indices] ] ].
+For example, [ [1, [1,3]], [2, [2,4,5]] ] means sample 1 and 3 will be computed using task 1 model,
+and sample 2, 4 and 5 will be computed using task 2 model.
+If it is None, then compute all samples with task 1 model.</p>
+</dd>
+<dt>dimensions (None or list):  </dt><dd><p>specifies which dimension of desctiptor will be used.
+For example, [2,5] means only compute using 2D and 5D models.
+If it is None, then compute all samples with all dimension models.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Values computed using models found by SISSO.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.predictions">
+<code class="sig-name descname">predictions</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_cv=False</em>, <em class="sig-param">display_task=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns predictions.
+The index order is dimension, sample if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+or CV index, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+or CV index, task, sample, dimension if <code class="docutils literal notranslate"><span class="pre">display_cv</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">display_task</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the predictions contain index of task or not.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Predictions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.total_errors">
+<code class="sig-name descname">total_errors</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_cv=False</em>, <em class="sig-param">display_task=False</em>, <em class="sig-param">display_baseline=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.total_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.total_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute errors.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
+</dd>
+<dt>display_cv (bool):  </dt><dd><p>determines the errors contain index of CV or not.</p>
+</dd>
+<dt>display_task (bool):  </dt><dd><p>determines the errors contain index of task or not.</p>
+</dd>
+<dt>display_baseline (bool):  </dt><dd><p>determines whether display baseline</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>RMSE, MAE, 25%ile AE, 50%ile AE, 75%ile AE, 95%ile AE, MaxAE of given errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.evaluation.compute_errors">
+<code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">compute_errors</code><span class="sig-paren">(</span><em class="sig-param">errors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#compute_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.compute_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute errors.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>errors:</dt><dd><p>difference between predictions and exact value.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>RMSE, MAE, 25%ile AE, 50%ile AE, 75%ile AE, 95%ile AE, MaxAE of given errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.evaluation.compute_using_model_reg">
+<code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">compute_using_model_reg</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">result=None</em>, <em class="sig-param">training=True</em>, <em class="sig-param">data=None</em>, <em class="sig-param">task_idx=None</em>, <em class="sig-param">dimension_idx=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#compute_using_model_reg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.compute_using_model_reg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses SISSO model of specific <code class="docutils literal notranslate"><span class="pre">task_idx</span></code> and <code class="docutils literal notranslate"><span class="pre">dimension_idx</span></code> to predict property of <code class="docutils literal notranslate"><span class="pre">data</span></code>.
+This function is a little bit hard to use, you can also see <a class="reference internal" href="#SISSOkit.evaluation.Regression.predict" title="SISSOkit.evaluation.Regression.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Regression.predict()</span></code></a></p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>path (string): </dt><dd><p>directory path of SISSO result which contains the model you want to use.</p>
+</dd>
+<dt>result (Regression): </dt><dd><p>instance of Regression which contains the model you want to use.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>whether the task is training or predicting. Default is True.</p>
+</dd>
+<dt>data (string or pandas.DataFrame): </dt><dd><p>the path of the data or the data you want to compute. 
+If it is <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, it will be recognized as path to the data and 
+use <code class="docutils literal notranslate"><span class="pre">data=pd.read_csv(data,sep=r'\s+')</span></code> to read the data, so remember to use space to seperate the data.
+Otherwise it should be <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt>task_idx (integer): </dt><dd><p>specifies which task of model you want to use.</p>
+</dd>
+<dt>dimension_idx (integer): </dt><dd><p>specifies which dimension of model you want to use.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Values computed using given model. The index order is [task, dimension, sample], it may not include
+all the index here, depending on you input.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>You should only specify one of <code class="docutils literal notranslate"><span class="pre">path</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> to determine what model you want to use.</p></li>
+<li><p>You only need to pass value to <code class="docutils literal notranslate"><span class="pre">task_idx</span></code> and <code class="docutils literal notranslate"><span class="pre">dimension_idx</span></code> when you want to use specific <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></li>
+<li><p>If you don’t pass value to <code class="docutils literal notranslate"><span class="pre">data</span></code>, you will get predictions of <code class="docutils literal notranslate"><span class="pre">train.dat</span></code> if <code class="docutils literal notranslate"><span class="pre">training</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>
+or predictions of <code class="docutils literal notranslate"><span class="pre">validation.dat</span></code> if <code class="docutils literal notranslate"><span class="pre">training</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>. 
+Also, in this case, you don’t need to pass task_idx and dimension_idx, because you already specify which
+task of model the sample should use, and it will return all dimension results.</p></li>
+<li><p>If you pass value to <code class="docutils literal notranslate"><span class="pre">data</span></code>, then you have to specify <code class="docutils literal notranslate"><span class="pre">task_idx</span></code>, so it means that
+all samples should be computed using the same task. 
+If you don’t pass value to <code class="docutils literal notranslate"><span class="pre">dimension_idx</span></code>, it will return values computed by all the dimension of models,
+otherwise it will only return values computed using <code class="docutils literal notranslate"><span class="pre">dimension_idx</span></code> of model.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.evaluation.evaluate_expression">
+<code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">evaluate_expression</code><span class="sig-paren">(</span><em class="sig-param">expression</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#evaluate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.evaluate_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the values using <code class="docutils literal notranslate"><span class="pre">expression</span></code> to compute <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>expression (string): </dt><dd><p>arithmetic expression. 
+The expression should be in the same form as the descriptor in file <code class="docutils literal notranslate"><span class="pre">SISSO.out</span></code>,
+i.e., every operation should be enclosed in parenthesis, like (exp((A+B))/((C*D))^2).</p>
+</dd>
+<dt>data (pandas.DataFrame): </dt><dd><p>the data you want to compute, with samples as index and features as columns.
+The features name should be correspondent to the operands in expression.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.Series: values computed using <code class="docutils literal notranslate"><span class="pre">expression</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.evaluation.predict_reg">
+<code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">predict_reg</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">descriptors</em>, <em class="sig-param">coefficients</em>, <em class="sig-param">intercepts</em>, <em class="sig-param">tasks=None</em>, <em class="sig-param">dimensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#predict_reg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.predict_reg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the predictions.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>data (string or pandas.DataFrame): </dt><dd><p>the path of the data or the data you want to compute. 
+If it is <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, it will be recognized as path to the data and 
+use <code class="docutils literal notranslate"><span class="pre">data=pd.read_csv(data,sep=r'\s+')</span></code> to read the data, so remember to use space to seperate the data.
+Otherwise it should be <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt>descriptors (list): </dt><dd><p>the descriptors you want to use. The index order should be dimension of model then dimension of desciptor.</p>
+</dd>
+<dt>coefficients (list): </dt><dd><p>the coefficients you want to use. The index order should be task, dimension of model then dimension of desciptor.</p>
+</dd>
+<dt>intercepts (float or list): </dt><dd><p>the intercepts you want to use. The index order should be task then dimension of model.</p>
+</dd>
+<dt>tasks (None or list): </dt><dd><p>specifies which sample should use which task of model to compute.
+It should be task=[ [task_index, [sample_indices] ] ].
+For example, [ [1, [1,3]], [2, [2,4,5]] ] means sample 1 and 3 will be computed using task 1 model,
+and sample 2, 4 and 5 will be computed using task 2 model.
+If it is None, then compute all samples with task 1 model.</p>
+</dd>
+<dt>dimensions (None or list): </dt><dd><p>specifies which dimension of desctiptor will be used.
+For example, [2,5] means only compute using 2D and 5D models.
+If it is None, then compute all samples with all dimension models.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Predictions using passed models.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">intercepts</span></code> should be correspondent to other arguments.</p></li>
+<li><p>If you just want to use 1 model, then <code class="docutils literal notranslate"><span class="pre">descriptors</span></code>, <code class="docutils literal notranslate"><span class="pre">coefficients</span></code> shoule be a list with string and float as item, 
+and <code class="docutils literal notranslate"><span class="pre">intercepts</span></code> should be <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>. You don’t need to set <code class="docutils literal notranslate"><span class="pre">tasks</span></code> and <code class="docutils literal notranslate"><span class="pre">dimensions</span></code> in this case.</p></li>
+<li><p>If you want to use many models, <code class="docutils literal notranslate"><span class="pre">coefficients</span></code> should be a list and index is different task.
+Each item in the list should also be a list and index is dimension of the model.
+Then each item of this list is also a list and index is dimension of descriptor, which contains specific descriptor or coefficient. 
+So the index order should be task, dimension of model then dimension of desciptor.
+Index order of <code class="docutils literal notranslate"><span class="pre">descriptors</span></code> should be dimension of model then dimension of desciptor.
+Index order of <code class="docutils literal notranslate"><span class="pre">intercepts</span></code> should be task then dimension of model.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SISSOkit.notebook">
+<span id="sissokit-notebook-module"></span><h2>SISSOkit.notebook module<a class="headerlink" href="#module-SISSOkit.notebook" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="SISSOkit.notebook.generate_report">
+<code class="sig-prename descclassname">SISSOkit.notebook.</code><code class="sig-name descname">generate_report</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">file_path</em>, <em class="sig-param">notebook_name</em>, <em class="sig-param">file_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/notebook.html#generate_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.notebook.generate_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates jupyter notebook reports.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>path (list):  </dt><dd><p>path to SISSO results. If there is only one result over whole data set, then
+it should be a list containing only 1 item. If there is also cross validation results,
+it should be [path to result over whole data set, path to cross validation results].</p>
+</dd>
+<dt>file_path (string):  </dt><dd><p>path to newly generated jupyter notebook.</p>
+</dd>
+<dt>notebook_name (int or string):  </dt><dd><p>notebook index or notebook name.
+=====  =====
+index   name
+=====  =====
+0      regression
+1      regression with CV
+=====  =====</p>
+</dd>
+<dt>file_name (None or string): the newly generated jupyter notebook name. If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>,</dt><dd><p>the file name is the same as notebook template name.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SISSOkit.plot">
+<span id="sissokit-plot-module"></span><h2>SISSOkit.plot module<a class="headerlink" href="#module-SISSOkit.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="SISSOkit.plot.abs_errors_vs_dimension">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">abs_errors_vs_dimension</code><span class="sig-paren">(</span><em class="sig-param">*regressions</em>, <em class="sig-param">training=True</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">selected_errors=None</em>, <em class="sig-param">display_baseline=False</em>, <em class="sig-param">label=''</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#abs_errors_vs_dimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.abs_errors_vs_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the histogram of absolute errors with box plot for errors.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>regressions (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>seleted_errors (None or list): </dt><dd><p>what errors should appear in the plot.
+errors are ‘RMSE’,’MAE’,‘25%ile AE’,‘50%ile AE’,‘75%ile AE’,‘95%ile AE’,’MaxAE’.
+If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all the errors will appear in the plot.</p>
+</dd>
+<dt>display_baseline (bool): </dt><dd><p>whether plot baseline.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.baselineplot">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">baselineplot</code><span class="sig-paren">(</span><em class="sig-param">regression</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">marker='x'</em>, <em class="sig-param">marker_color='r'</em>, <em class="sig-param">marker_y=1</em>, <em class="sig-param">marker_shape=100</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#baselineplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.baselineplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the histgram of baseline of regression.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>regression (evaluation.Regression): </dt><dd><p>regression result.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>marker (char): </dt><dd><p>marker type of mean value. It’s the same as in matplotlib.</p>
+</dd>
+<dt>marker_color (char): </dt><dd><p>marker color of mean value. It’s the same as in matplotlib.</p>
+</dd>
+<dt>marker_shape (int): </dt><dd><p>marker shape of mean value. It’s the same as in matplotlib.</p>
+</dd>
+<dt>marker_y (float): </dt><dd><p>vertical coordinate of marker of mean value.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.boxplot">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">boxplot</code><span class="sig-paren">(</span><em class="sig-param">regression</em>, <em class="sig-param">training=True</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#boxplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.boxplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the boxplot of regression.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>regression (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.error_hist">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">error_hist</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">*regressions</em>, <em class="sig-param">training=True</em>, <em class="sig-param">absolute=False</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#error_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.error_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the histgram of errors of regression.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>dimension (int): </dt><dd><p>dimension of descriptor.</p>
+</dd>
+<dt>regressions (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+<dt>absolute (bool): </dt><dd><p>absolute errors or not.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.errors_details">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">errors_details</code><span class="sig-paren">(</span><em class="sig-param">regression</em>, <em class="sig-param">training=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#errors_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.errors_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the detailed information about regression, including histograme of signed errors,
+preditction v.s. property and histgram of absolute errors with markers.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>regression (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.hist_with_markers">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">hist_with_markers</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">*regressions</em>, <em class="sig-param">training=True</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">selected_errors=None</em>, <em class="sig-param">marker_x=0</em>, <em class="sig-param">marker=None</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#hist_with_markers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.hist_with_markers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the histogram of absolute errors with markers</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>dimension (int): </dt><dd><p>dimension of descriptor.</p>
+</dd>
+<dt>regressions (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>seleted_errors (None or list): </dt><dd><p>what errors should pinpoint in the plot.
+errors are ‘RMSE’,’MAE’,‘25%ile AE’,‘50%ile AE’,‘75%ile AE’,‘95%ile AE’,’MaxAE’.
+If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all the errors will appear in the plot.</p>
+</dd>
+<dt>marker_x (float): </dt><dd><p>horrizontal coordinate of marker.</p>
+</dd>
+<dt>marker (NOne or list): </dt><dd><p>marker type. It’s the same as in matplotlib.
+If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then will use the default types.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.plot.prediction_vs_property">
+<code class="sig-prename descclassname">SISSOkit.plot.</code><code class="sig-name descname">prediction_vs_property</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">*regressions</em>, <em class="sig-param">training=True</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">fontsize=20</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/plot.html#prediction_vs_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.plot.prediction_vs_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the scatter plot of prediction v.s. property.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>dimension (int): </dt><dd><p>dimension of descriptor.</p>
+</dd>
+<dt>regressions (evaluation.Regression or evaluation.RegressionCV): </dt><dd><p>regression result.</p>
+</dd>
+<dt>training (bool): </dt><dd><p>training errors or prediction errors.</p>
+</dd>
+<dt>unit (string): </dt><dd><p>unit of property.</p>
+</dd>
+<dt>fontsize (int): </dt><dd><p>fontsize of axis name.</p>
+</dd>
+<dt>kw: </dt><dd><p>keyword arguments of histogram. It’s the same as <code class="docutils literal notranslate"><span class="pre">hist()</span></code> in matplotlib</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SISSOkit.utils">
+<span id="sissokit-utils-module"></span><h2>SISSOkit.utils module<a class="headerlink" href="#module-SISSOkit.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="SISSOkit.utils.descriptors_to_markdown">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">descriptors_to_markdown</code><span class="sig-paren">(</span><em class="sig-param">expression</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#descriptors_to_markdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.descriptors_to_markdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the markdown form of expression</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="SISSOkit.utils.lazyproperty">
+<em class="property">class </em><code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">lazyproperty</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#lazyproperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.lazyproperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Lazy property</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.utils.models_to_markdown">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">models_to_markdown</code><span class="sig-paren">(</span><em class="sig-param">regression</em>, <em class="sig-param">task</em>, <em class="sig-param">dimension</em>, <em class="sig-param">indent=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#models_to_markdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.models_to_markdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the markdown form of models.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.utils.scientific_notation_to_markdown">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">scientific_notation_to_markdown</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#scientific_notation_to_markdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.scientific_notation_to_markdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the markdown form of scientific notation form of value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.utils.seperate_DataFrame">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">seperate_DataFrame</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">n_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#seperate_DataFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.seperate_DataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the seperated DataFrame.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.utils.seperate_list">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">seperate_list</code><span class="sig-paren">(</span><em class="sig-param">original_list</em>, <em class="sig-param">n_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#seperate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.seperate_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the seperated list.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SISSOkit.utils.start_and_number">
+<code class="sig-prename descclassname">SISSOkit.utils.</code><code class="sig-name descname">start_and_number</code><span class="sig-paren">(</span><em class="sig-param">n_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/utils.html#start_and_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.utils.start_and_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the start index and number in each turn.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SISSOkit">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SISSOkit" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Chuanqi Xu
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

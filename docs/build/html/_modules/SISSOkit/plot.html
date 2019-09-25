@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SISSOkit.plot &mdash; SISSOkit 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SISSOkit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SISSOkit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>SISSOkit.plot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SISSOkit.plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">evaluation</span> <span class="k">as</span> <span class="n">evl</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">cross_validation</span> <span class="k">as</span> <span class="n">cv</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+
+
+
+
+<div class="viewcode-block" id="baselineplot"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.baselineplot">[docs]</a><span class="k">def</span> <span class="nf">baselineplot</span><span class="p">(</span><span class="n">regression</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">marker_color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">marker_y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">marker_shape</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the histgram of baseline of regression.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            regression (evaluation.Regression): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            marker (char): </span>
+<span class="sd">                marker type of mean value. It&#39;s the same as in matplotlib.</span>
+<span class="sd">            </span>
+<span class="sd">            marker_color (char): </span>
+<span class="sd">                marker color of mean value. It&#39;s the same as in matplotlib.</span>
+<span class="sd">            </span>
+<span class="sd">            marker_shape (int): </span>
+<span class="sd">                marker shape of mean value. It&#39;s the same as in matplotlib.</span>
+<span class="sd">            </span>
+<span class="sd">            marker_y (float): </span>
+<span class="sd">                vertical coordinate of marker of mean value.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="n">marker_y</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">marker_color</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">marker_shape</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mean Value&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">property_name</span><span class="o">+</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">property_name</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Counts&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of </span><span class="si">%s</span><span class="s1"> over training data</span><span class="se">\n</span><span class="s1">Mean = </span><span class="si">%.5f</span><span class="se">\n</span><span class="s1">Standard deviation = </span><span class="si">%.5f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">property_name</span><span class="p">,</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">std</span><span class="p">()),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="error_hist"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.error_hist">[docs]</a><span class="k">def</span> <span class="nf">error_hist</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span><span class="o">*</span><span class="n">regressions</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">absolute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the histgram of errors of regression.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            dimension (int): </span>
+<span class="sd">                dimension of descriptor.</span>
+<span class="sd">            </span>
+<span class="sd">            regressions (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">            </span>
+<span class="sd">            absolute (bool): </span>
+<span class="sd">                absolute errors or not.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dimension</span><span class="o">-=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">:</span>
+        <span class="n">collect_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">))[</span><span class="n">dimension</span><span class="p">,:]</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Absolute error </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Absolute error&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">collect_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)[</span><span class="n">dimension</span><span class="p">,:]</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Signed error </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Signed error&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">collect_data</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Counts&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="prediction_vs_property"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.prediction_vs_property">[docs]</a><span class="k">def</span> <span class="nf">prediction_vs_property</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span><span class="o">*</span><span class="n">regressions</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the scatter plot of prediction v.s. property.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            dimension (int): </span>
+<span class="sd">                dimension of descriptor.</span>
+
+<span class="sd">            regressions (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dimension</span><span class="o">-=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">evl</span><span class="o">.</span><span class="n">RegressionCV</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">training</span><span class="p">:</span>
+            <span class="n">property_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">cv</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span> <span class="k">for</span> <span class="n">cv</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">regression</span><span class="o">.</span><span class="n">n_cv</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">property_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">validation_data</span><span class="p">[</span><span class="n">cv</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span> <span class="k">for</span> <span class="n">cv</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">regression</span><span class="o">.</span><span class="n">n_cv</span><span class="p">)])</span>
+        <span class="n">prediction_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">predictions</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)[</span><span class="n">dimension</span><span class="p">,:]</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span><span class="o">-</span><span class="n">property_values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">property_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span>
+        <span class="n">prediction_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">regression</span><span class="o">.</span><span class="n">predictions</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)[</span><span class="n">dimension</span><span class="p">,:]</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span><span class="o">-</span><span class="n">property_values</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">property_values</span><span class="p">,</span><span class="n">prediction_value</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> in data set </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">property_name</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Signed error </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> in data set&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">property_name</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Signed error&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="hist_with_markers"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.hist_with_markers">[docs]</a><span class="k">def</span> <span class="nf">hist_with_markers</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span><span class="o">*</span><span class="n">regressions</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">selected_errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">marker_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the histogram of absolute errors with markers</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            dimension (int): </span>
+<span class="sd">                dimension of descriptor.</span>
+<span class="sd">            </span>
+<span class="sd">            regressions (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            seleted_errors (None or list): </span>
+<span class="sd">                what errors should pinpoint in the plot.</span>
+<span class="sd">                errors are &#39;RMSE&#39;,&#39;MAE&#39;,&#39;25%ile AE&#39;,&#39;50%ile AE&#39;,&#39;75%ile AE&#39;,&#39;95%ile AE&#39;,&#39;MaxAE&#39;.</span>
+<span class="sd">                If it is ``None``, then all the errors will appear in the plot.</span>
+<span class="sd">            </span>
+<span class="sd">            marker_x (float): </span>
+<span class="sd">                horrizontal coordinate of marker.</span>
+<span class="sd">            </span>
+<span class="sd">            marker (NOne or list): </span>
+<span class="sd">                marker type. It&#39;s the same as in matplotlib.</span>
+<span class="sd">                If it is ``None``, then will use the default types.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dimension</span><span class="o">-=</span><span class="mi">1</span>
+    <span class="n">collect_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">))[</span><span class="n">dimension</span><span class="p">,:]</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">collect_data</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Absolute error </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Absolute error&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Counts&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    
+    <span class="n">errors</span><span class="o">=</span><span class="n">evl</span><span class="o">.</span><span class="n">compute_errors</span><span class="p">(</span><span class="n">collect_data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selected_errors</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">selected_errors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;RMSE&#39;</span><span class="p">,</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span><span class="s1">&#39;25</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;50</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;75</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;95</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;MaxAE&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">marker</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">marker</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;RMSE&#39;</span><span class="p">:</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;MAE&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;25</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">:</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;50</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">:</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;75</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">:</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;95</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">:</span><span class="s1">&#39;+&#39;</span><span class="p">,</span><span class="s1">&#39;MaxAE&#39;</span><span class="p">:</span><span class="s1">&#39;.&#39;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">selected_error</span> <span class="ow">in</span> <span class="n">selected_errors</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">marker_x</span><span class="p">,</span><span class="n">errors</span><span class="p">[</span><span class="n">selected_error</span><span class="p">],</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">[</span><span class="n">selected_error</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="n">selected_error</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="abs_errors_vs_dimension"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.abs_errors_vs_dimension">[docs]</a><span class="k">def</span> <span class="nf">abs_errors_vs_dimension</span><span class="p">(</span><span class="o">*</span><span class="n">regressions</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">selected_errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">display_baseline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the histogram of absolute errors with box plot for errors.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            regressions (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            seleted_errors (None or list): </span>
+<span class="sd">                what errors should appear in the plot.</span>
+<span class="sd">                errors are &#39;RMSE&#39;,&#39;MAE&#39;,&#39;25%ile AE&#39;,&#39;50%ile AE&#39;,&#39;75%ile AE&#39;,&#39;95%ile AE&#39;,&#39;MaxAE&#39;.</span>
+<span class="sd">                If it is ``None``, then all the errors will appear in the plot.</span>
+<span class="sd">            </span>
+<span class="sd">            display_baseline (bool): </span>
+<span class="sd">                whether plot baseline.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">display_baseline</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dimension</span><span class="p">],[</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">baseline</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">regressions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">baseline</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Baseline&#39;</span><span class="p">)</span>
+    <span class="n">collect_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">))</span> <span class="k">for</span> <span class="n">regression</span> <span class="ow">in</span> <span class="n">regressions</span><span class="p">])</span>
+    <span class="n">errors</span><span class="o">=</span><span class="n">evl</span><span class="o">.</span><span class="n">compute_errors</span><span class="p">(</span><span class="n">collect_data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selected_errors</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">selected_errors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;RMSE&#39;</span><span class="p">,</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span><span class="s1">&#39;25</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;50</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;75</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;95</span><span class="si">%i</span><span class="s1">le AE&#39;</span><span class="p">,</span><span class="s1">&#39;MaxAE&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">selected_error</span> <span class="ow">in</span> <span class="n">selected_errors</span><span class="p">:</span>
+        <span class="n">errors</span><span class="p">[</span><span class="n">selected_error</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">selected_error</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">errors</span><span class="p">[</span><span class="n">selected_error</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Errors </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Errors&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimension of the descriptor&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="boxplot"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.boxplot">[docs]</a><span class="k">def</span> <span class="nf">boxplot</span><span class="p">(</span><span class="n">regression</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the boxplot of regression.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            regression (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">            </span>
+<span class="sd">            unit (string): </span>
+<span class="sd">                unit of property.</span>
+<span class="sd">            </span>
+<span class="sd">            fontsize (int): </span>
+<span class="sd">                fontsize of axis name.</span>
+<span class="sd">            </span>
+<span class="sd">            kw: </span>
+<span class="sd">                keyword arguments of histogram. It&#39;s the same as ``hist()`` in matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">boxplot</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">))[</span><span class="n">dimension</span><span class="p">]</span> <span class="k">for</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="p">)],</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Errors </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Errors&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="errors_details"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.plot.errors_details">[docs]</a><span class="k">def</span> <span class="nf">errors_details</span><span class="p">(</span><span class="n">regression</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the detailed information about regression, including histograme of signed errors,</span>
+<span class="sd">        preditction v.s. property and histgram of absolute errors with markers.</span>
+<span class="sd">    </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            regression (evaluation.Regression or evaluation.RegressionCV): </span>
+<span class="sd">                regression result.</span>
+<span class="sd">            </span>
+<span class="sd">            training (bool): </span>
+<span class="sd">                training errors or prediction errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">6</span><span class="o">*</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span><span class="mi">3</span><span class="p">,(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">error_hist</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">regression</span><span class="p">,</span><span class="n">absolute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">,</span><span class="n">rwidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span><span class="mi">3</span><span class="p">,(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">prediction_vs_property</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">regression</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span><span class="mi">3</span><span class="p">,(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">hist_with_markers</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">regression</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rwidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span><span class="n">marker_x</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Chuanqi Xu
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

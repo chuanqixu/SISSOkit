@@ -1,8 +1,15 @@
 import re
-import evaluation as evl
+from collections import Iterable
+
+
+
 
 
 class lazyproperty:
+    r"""
+    Lazy property
+    """
+    
     def __init__(self, func):
         self.func = func
 
@@ -15,6 +22,10 @@ class lazyproperty:
             return value
     
 def start_and_number(n_list):
+    r"""
+    Returns the start index and number in each turn.
+    """
+    
     n_now=0
     sn=[]
     for i in range(len(n_list)):
@@ -23,17 +34,36 @@ def start_and_number(n_list):
     return sn
 
 def seperate_DataFrame(dataframe,n_list):
-    return [dataframe.iloc[start:start+n_item]
-            for start,n_item in start_and_number(n_list)]
+    r"""
+    Returns the seperated DataFrame.
+    """
+    
+    if isinstance(n_list[0],Iterable)==False:
+        return [dataframe.iloc[start:start+n_item]
+                for start,n_item in start_and_number(n_list)]
+    elif isinstance(n_list[0][0],Iterable)==False:
+        n1=[sum(n) for n in n_list]
+        data1=seperate_DataFrame(dataframe,n1)
+        return [seperate_DataFrame(data,n) for data,n in zip(data1,n_list)]
     
 def seperate_list(original_list,n_list):
-    return [original_list[start:start+n_item]
-            for start,n_item in start_and_number(n_list)]
+    r"""
+    Returns the seperated list.
+    """
+    
+    if isinstance(n_list[0],Iterable)==False:
+        return [original_list[start:start+n_item]
+                for start,n_item in start_and_number(n_list)]
+    elif isinstance(n_list[0][0],Iterable)==False:
+        n1=[sum(n) for n in n_list]
+        data1=seperate_DataFrame(original_list,n1)
+        return [seperate_DataFrame(data,n) for data,n in zip(data1,n_list)]
 
 def descriptors_to_markdown(expression):
+    r"""
+    Returns the markdown form of expression
     """
-    Return the value computed using given expression over data.
-    """
+    
     operators=['+','-','*','/','exp','exp-','^-1','^2','^3','sqrt','cbrt','log','abs','^6','sin','cos','(',')']
     OPTR=[]
     OPND=[]
@@ -118,6 +148,10 @@ def descriptors_to_markdown(expression):
     return OPND.pop()
 
 def scientific_notation_to_markdown(value):
+    r"""
+    Returns the markdown form of scientific notation form of value.
+    """
+    
     value=str(value)
     if 'e' in value or 'E' in value:
         try:
@@ -142,6 +176,10 @@ def scientific_notation_to_markdown(value):
         return value
 
 def models_to_markdown(regression,task,dimension,indent=''):
+    r"""
+    Returns the markdown form of models.
+    """
+    
     coefficients=regression.coefficients[task-1][dimension-1]
     intercepts=regression.intercepts[task-1][dimension-1]
     descriptors=regression.descriptors[dimension-1]
