@@ -56,3 +56,7 @@ Main idea of SISSOkit is that every SISSO result is an instance. The basic class
 Arguments in `SISSO.in`, descriptors, coefficients and intercepts in `SISSO.out` are all accessible by getting the attributes.
 
 Prediction values, training errors, prediction errors can be acquired by calling the methods.
+
+### Documentation
+
+For more detailed information about SISSOkit, please read documentation `./docs/build/html/index.html`, which is generated automatically by sphinx.
