@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: SISSOkit
+Version: 0.2.2
+Summary: Modules for cross validation, evaluation and plot of SISSO
+Home-page: https://github.com/LeGenDXXX/SISSOkit
+Author: Chuanqi Xu
+Author-email: xcq@mail.ustc.edu.cn
+License: Apache Licence
+Description: SISSOkit is a Python library for analysis of SISSO,         including generating cross validation files,         analyzing results, plotting. Data structures of SISSOkit         are mainly numpy array, pandas DataFrame or Series and Python         built-in data structure like list, so you can easily build         your own code based on SISSOkit.
+Platform: any

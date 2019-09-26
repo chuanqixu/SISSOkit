@@ -79,7 +79,7 @@ def error_hist(dimension,*regressions,training=True,absolute=False,unit=None,fon
     """
     
     dimension-=1
-    if abs:
+    if absolute:
         collect_data=np.hstack([np.abs(regression.errors(training=training))[dimension,:] for regression in regressions])
         if unit:
             plt.xlabel('Absolute error %s'%('['+unit+']'),fontsize=fontsize)

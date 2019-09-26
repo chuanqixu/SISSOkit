@@ -78,7 +78,7 @@ def kfold(current_path,target_path,property_name,num_fold):
     finally:
         os.mkdir(os.path.join(target_path,'%s_cv'%property_name))
         target_path=os.path.join(target_path,'%s_cv'%property_name)
-        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=r'\s+')
+        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=' ')
         with open(os.path.join(target_path,'cross_validation_info.dat'),'w') as f:
             json.dump({'cross_validation_type':'%d-fold'%num_fold,'shuffle_data_list':data_list},f)
 
@@ -116,8 +116,8 @@ def kfold(current_path,target_path,property_name,num_fold):
         
         data_train=data_total.iloc[np.hstack(train_list)-1]
         data_val=data_total.iloc[np.hstack(val_list)-1]
-        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=r'\s+')
-        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=r'\s+')
+        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=' ')
+        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=' ')
         
         with open(os.path.join(target_path,property_name+'_cv%d'%i,'SISSO.in'),'r') as f:
             lines=f.readlines()
@@ -201,7 +201,7 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
     finally:
         os.mkdir(os.path.join(target_path,'%s_cv'%property_name))
         target_path=os.path.join(target_path,'%s_cv'%property_name)
-        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=r'\s+')
+        data_total.to_csv(os.path.join(target_path,'train.dat'),index=False,sep=' ')
         with open(os.path.join(target_path,'cross_validation_info.dat'),'w') as f:
             if num_out:
                 json.dump({'cross_validation_type':'leave-%d-out'%num_out,'iteration_times':num_iter},f)
@@ -234,8 +234,8 @@ def leave_out(current_path,target_path,property_name,num_iter,frac=0,num_out=0):
         val_len=list(map(len,val_list))
         data_train=data_total.iloc[np.hstack(train_list)-1]
         data_val=data_total.iloc[np.hstack(val_list)-1]
-        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=r'\s+')
-        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=r'\s+')
+        data_train.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'train.dat'),index=False,sep=' ')
+        data_val.to_csv(os.path.join(target_path,property_name+'_cv%d'%i,'validation.dat'),index=False,sep=' ')
         
         with open(os.path.join(target_path,property_name+'_cv%d'%i,'shuffle.dat'),'w') as f:
             json.dump({'training_list':train_list,'training_samples_number':train_len,'validation_list':val_list,'validation_samples_number':val_len},f)

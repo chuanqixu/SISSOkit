@@ -444,7 +444,7 @@
 
 <div class="viewcode-block" id="compute_errors"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.evaluation.compute_errors">[docs]</a><span class="k">def</span> <span class="nf">compute_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;    </span>
-<span class="sd">    Compute errors.</span>
+<span class="sd">    Computes errors.</span>
 <span class="sd">    </span>
 <span class="sd">    Arguments:</span>
 <span class="sd">        errors:</span>
@@ -828,7 +828,7 @@
     
 <div class="viewcode-block" id="Regression.total_errors"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.evaluation.Regression.total_errors">[docs]</a>    <span class="k">def</span> <span class="nf">total_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">display_task</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">display_baseline</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;    </span>
-<span class="sd">        Compute errors.</span>
+<span class="sd">        Computes errors.</span>
 <span class="sd">        </span>
 <span class="sd">        Arguments:</span>
 <span class="sd">            training (bool):  </span>
@@ -854,7 +854,7 @@
         
 <div class="viewcode-block" id="Regression.check_predictions"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.evaluation.Regression.check_predictions">[docs]</a>    <span class="k">def</span> <span class="nf">check_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dimension</span><span class="p">,</span><span class="n">multiply_coefficients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check predictions of each descriptor.</span>
+<span class="sd">        Checks predictions of each descriptor.</span>
 <span class="sd">        </span>
 <span class="sd">        Arguments:  </span>
 <span class="sd">            dimension (int):</span>
@@ -863,7 +863,7 @@
 <span class="sd">            multiply_coefficients (bool):  </span>
 <span class="sd">                whether it should be multiplied by coefficients.</span>
 <span class="sd">            </span>
-<span class="sd">        Returns</span>
+<span class="sd">        Returns:</span>
 <span class="sd">            Predictions of each descriptor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -871,24 +871,49 @@
         <span class="n">coefficients</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span>
         <span class="n">n_sample</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_sample</span>
         <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_task</span>
-        <span class="n">predictions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">predictions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()])</span>
         <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-            <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">multiply_coefficients</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimension</span><span class="p">):</span>
                 <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-                    <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">coefficients</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">]</span><span class="o">*</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">predictions</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="n">coefficients</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">]</span><span class="o">*</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
                     <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimension</span><span class="p">):</span>
                 <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-                    <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">predictions</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
                     <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">predictions</span></div></div>
+        <span class="k">return</span> <span class="n">predictions</span></div>
+    
+<div class="viewcode-block" id="Regression.check_percentage"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.evaluation.Regression.check_percentage">[docs]</a>    <span class="k">def</span> <span class="nf">check_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dimension</span><span class="p">,</span><span class="n">absolute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks percentage of each descriptors.</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:  </span>
+<span class="sd">            dimension (int):</span>
+<span class="sd">                dimension of the descriptor.</span>
+<span class="sd">                </span>
+<span class="sd">            absolute (bool):</span>
+<span class="sd">                whether return the absolute descriptor.</span>
+<span class="sd">                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the sum of intercept and every descriptor multiplied by coefficient.</span>
+<span class="sd">                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the proeprty. In this case, sometimes it will be larger than 1.</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            percentage which index is [dimension, sample].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">predictions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">check_predictions</span><span class="p">(</span><span class="n">dimension</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">absolute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">predictions</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">values</span></div></div>
 
 
 
@@ -1351,24 +1376,49 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">n_sample</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_validation_sample</span><span class="p">[</span><span class="n">cv_idx</span><span class="p">]</span>
             <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_data_task</span><span class="p">[</span><span class="n">cv_idx</span><span class="p">]</span>
-        <span class="n">predictions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_sample</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">predictions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">n_sample</span><span class="o">.</span><span class="n">sum</span><span class="p">()])</span>
         <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-            <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span><span class="p">[</span><span class="n">cv_idx</span><span class="p">][</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span><span class="p">[</span><span class="n">cv_idx</span><span class="p">][</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">multiply_coefficients</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimension</span><span class="p">):</span>
                 <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-                    <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">coefficients</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">]</span><span class="o">*</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">predictions</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="n">coefficients</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">]</span><span class="o">*</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
                     <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimension</span><span class="p">):</span>
                 <span class="n">total_n_sample</span><span class="o">=</span><span class="mi">0</span>
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_sample</span><span class="p">)):</span>
-                    <span class="n">predictions</span><span class="p">[</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">],</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">predictions</span><span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">total_n_sample</span><span class="p">:</span><span class="n">total_n_sample</span><span class="o">+</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]]</span><span class="o">=</span><span class="n">evaluate_expression</span><span class="p">(</span><span class="n">descriptors</span><span class="p">[</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">d</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="n">task</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
                     <span class="n">total_n_sample</span><span class="o">+=</span><span class="n">n_sample</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">predictions</span></div></div>
+        <span class="k">return</span> <span class="n">predictions</span></div>
+    
+<div class="viewcode-block" id="RegressionCV.check_percentage"><a class="viewcode-back" href="../../SISSOkit.html#SISSOkit.evaluation.RegressionCV.check_percentage">[docs]</a>    <span class="k">def</span> <span class="nf">check_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cv_idx</span><span class="p">,</span><span class="n">dimension</span><span class="p">,</span><span class="n">absolute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks percentage of each descriptors.</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:  </span>
+<span class="sd">            dimension (int):</span>
+<span class="sd">                dimension of the descriptor.</span>
+<span class="sd">                </span>
+<span class="sd">            absolute (bool):</span>
+<span class="sd">                whether return the absolute descriptor.</span>
+<span class="sd">                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the sum of intercept and every descriptor multiplied by coefficient.</span>
+<span class="sd">                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the proeprty. In this case, sometimes it will be larger than 1.</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            percentage which index is [dimension, sample].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">predictions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">check_predictions</span><span class="p">(</span><span class="n">cv_idx</span><span class="p">,</span><span class="n">dimension</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">absolute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">predictions</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">cv_idx</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div></div>
 
 
 
@@ -1660,7 +1710,71 @@
 <span class="sd">                            compute_errors(self.errors(training=training,display_task=display_task))])</span>
 <span class="sd">        else:</span>
 <span class="sd">            return compute_errors(self.errors(training=training,display_task=display_task))</span>
-<span class="sd">&#39;&#39;&#39;</span></div>
+<span class="sd">        </span>
+<span class="sd">    def check_predictions(self,dimension,multiply_coefficients=True):</span>
+<span class="sd">        r&quot;&quot;&quot;</span>
+<span class="sd">        Checks predictions of each descriptor.</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:  </span>
+<span class="sd">            dimension (int):</span>
+<span class="sd">                dimension of the descriptor.</span>
+<span class="sd">                </span>
+<span class="sd">            multiply_coefficients (bool):  </span>
+<span class="sd">                whether it should be multiplied by coefficients.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Predictions of each descriptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        descriptors=self.descriptors</span>
+<span class="sd">        coefficients=self.coefficients</span>
+<span class="sd">        n_sample=self.n_sample</span>
+<span class="sd">        data=self.data_task</span>
+<span class="sd">        predictions=np.zeros([dimension+1,np.array(n_sample).sum()])</span>
+<span class="sd">        total_n_sample=0</span>
+<span class="sd">        for task in range(len(n_sample)):</span>
+<span class="sd">            predictions[0,total_n_sample:total_n_sample+n_sample[task]]=self.intercepts[task][dimension-1]</span>
+<span class="sd">            total_n_sample+=n_sample[task]</span>
+<span class="sd">        if multiply_coefficients:</span>
+<span class="sd">            for d in range(dimension):</span>
+<span class="sd">                total_n_sample=0</span>
+<span class="sd">                for task in range(len(n_sample)):</span>
+<span class="sd">                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values</span>
+<span class="sd">                    total_n_sample+=n_sample[task]</span>
+<span class="sd">        else:</span>
+<span class="sd">            for d in range(dimension):</span>
+<span class="sd">                total_n_sample=0</span>
+<span class="sd">                for task in range(len(n_sample)):</span>
+<span class="sd">                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=evaluate_expression(descriptors[dimension-1][d],data[task]).values</span>
+<span class="sd">                    total_n_sample+=n_sample[task]</span>
+<span class="sd">        return predictions</span>
+<span class="sd">    </span>
+<span class="sd">    def check_percentage(self,dimension,absolute=True):</span>
+<span class="sd">        r&quot;&quot;&quot;</span>
+<span class="sd">        Checks percentage of each descriptors.</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:  </span>
+<span class="sd">            dimension (int):</span>
+<span class="sd">                dimension of the descriptor.</span>
+<span class="sd">                </span>
+<span class="sd">            absolute (bool):</span>
+<span class="sd">                whether return the absolute descriptor.</span>
+<span class="sd">                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the sum of intercept and every descriptor multiplied by coefficient.</span>
+<span class="sd">                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the proeprty. In this case, sometimes it will be larger than 1.</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            percentage which index is [dimension, sample].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        predictions=self.check_predictions(dimension)</span>
+<span class="sd">        if absolute:</span>
+<span class="sd">            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)</span>
+<span class="sd">        else:</span>
+<span class="sd">            return predictions/self.property.values</span>
+<span class="sd">    &#39;&#39;&#39;</span></div>
+
 
 
 
@@ -2117,6 +2231,31 @@
 <span class="sd">                    predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=evaluate_expression(descriptors[dimension-1][d],data[task]).values</span>
 <span class="sd">                    total_n_sample+=n_sample[task]</span>
 <span class="sd">        return predictions</span>
+<span class="sd">        </span>
+<span class="sd">    def check_percentage(self,cv_idx,dimension,absolute=True):</span>
+<span class="sd">        r&quot;&quot;&quot;</span>
+<span class="sd">        Checks percentage of each descriptors.</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:  </span>
+<span class="sd">            dimension (int):</span>
+<span class="sd">                dimension of the descriptor.</span>
+<span class="sd">                </span>
+<span class="sd">            absolute (bool):</span>
+<span class="sd">                whether return the absolute descriptor.</span>
+<span class="sd">                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the sum of intercept and every descriptor multiplied by coefficient.</span>
+<span class="sd">                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,</span>
+<span class="sd">                and denominator is the proeprty. In this case, sometimes it will be larger than 1.</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            percentage which index is [dimension, sample].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        predictions=self.check_predictions(cv_idx,dimension)</span>
+<span class="sd">        if absolute:</span>
+<span class="sd">            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)</span>
+<span class="sd">        else:</span>
+<span class="sd">            return predictions/self.property[cv_idx].values</span>
 <span class="sd">    &#39;&#39;&#39;</span></div>
 </pre></div>
 

@@ -390,9 +390,30 @@ and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span
 </dd></dl>
 
 <dl class="method">
+<dt id="SISSOkit.evaluation.Regression.check_percentage">
+<code class="sig-name descname">check_percentage</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">absolute=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.check_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.check_percentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks percentage of each descriptors.</p>
+<dl class="simple">
+<dt>Arguments:  </dt><dd><dl class="simple">
+<dt>dimension (int):</dt><dd><p>dimension of the descriptor.</p>
+</dd>
+<dt>absolute (bool):</dt><dd><p>whether return the absolute descriptor.
+If it is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+If it is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the numerator is descriptor multiplied by corresponding coefficient,
+and denominator is the proeprty. In this case, sometimes it will be larger than 1.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>percentage which index is [dimension, sample].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="SISSOkit.evaluation.Regression.check_predictions">
 <code class="sig-name descname">check_predictions</code><span class="sig-paren">(</span><em class="sig-param">dimension</em>, <em class="sig-param">multiply_coefficients=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.check_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.check_predictions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check predictions of each descriptor.</p>
+<dd><p>Checks predictions of each descriptor.</p>
 <dl class="simple">
 <dt>Arguments:  </dt><dd><dl class="simple">
 <dt>dimension (int):</dt><dd><p>dimension of the descriptor.</p>
@@ -401,7 +422,7 @@ and <code class="docutils literal notranslate"><span class="pre">SISSO.out</span
 </dd>
 </dl>
 </dd>
-<dt>Returns</dt><dd><p>Predictions of each descriptor.</p>
+<dt>Returns:</dt><dd><p>Predictions of each descriptor.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -540,7 +561,7 @@ or task, sample, dimension if <code class="docutils literal notranslate"><span c
 <dl class="method">
 <dt id="SISSOkit.evaluation.Regression.total_errors">
 <code class="sig-name descname">total_errors</code><span class="sig-paren">(</span><em class="sig-param">training=True</em>, <em class="sig-param">display_task=False</em>, <em class="sig-param">display_baseline=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#Regression.total_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.Regression.total_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute errors.</p>
+<dd><p>Computes errors.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="simple">
 <dt>training (bool):  </dt><dd><p>determines whether its training or not.</p>
@@ -588,6 +609,27 @@ may be wrong.</p>
 <dt id="SISSOkit.evaluation.RegressionCV.baseline">
 <em class="property">property </em><code class="sig-name descname">baseline</code><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.baseline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the baseline, i.e., the errors with predicting every property using the mean value of the property in <code class="docutils literal notranslate"><span class="pre">train.dat</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SISSOkit.evaluation.RegressionCV.check_percentage">
+<code class="sig-name descname">check_percentage</code><span class="sig-paren">(</span><em class="sig-param">cv_idx</em>, <em class="sig-param">dimension</em>, <em class="sig-param">absolute=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#RegressionCV.check_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.RegressionCV.check_percentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks percentage of each descriptors.</p>
+<dl class="simple">
+<dt>Arguments:  </dt><dd><dl class="simple">
+<dt>dimension (int):</dt><dd><p>dimension of the descriptor.</p>
+</dd>
+<dt>absolute (bool):</dt><dd><p>whether return the absolute descriptor.
+If it is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+If it is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the numerator is descriptor multiplied by corresponding coefficient,
+and denominator is the proeprty. In this case, sometimes it will be larger than 1.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>percentage which index is [dimension, sample].</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -787,7 +829,7 @@ or CV index, task, sample, dimension if <code class="docutils literal notranslat
 <dl class="function">
 <dt id="SISSOkit.evaluation.compute_errors">
 <code class="sig-prename descclassname">SISSOkit.evaluation.</code><code class="sig-name descname">compute_errors</code><span class="sig-paren">(</span><em class="sig-param">errors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SISSOkit/evaluation.html#compute_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SISSOkit.evaluation.compute_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute errors.</p>
+<dd><p>Computes errors.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="simple">
 <dt>errors:</dt><dd><p>difference between predictions and exact value.</p>

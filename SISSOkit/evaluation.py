@@ -301,7 +301,7 @@ def predict_reg(data,descriptors,coefficients,intercepts,tasks=None,dimensions=N
 
 def compute_errors(errors):
     r"""    
-    Compute errors.
+    Computes errors.
     
     Arguments:
         errors:
@@ -685,7 +685,7 @@ class Regression(object):
     
     def total_errors(self,training=True,display_task=False,display_baseline=False):
         r"""    
-        Compute errors.
+        Computes errors.
         
         Arguments:
             training (bool):  
@@ -711,7 +711,7 @@ class Regression(object):
         
     def check_predictions(self,dimension,multiply_coefficients=True):
         r"""
-        Check predictions of each descriptor.
+        Checks predictions of each descriptor.
         
         Arguments:  
             dimension (int):
@@ -720,7 +720,7 @@ class Regression(object):
             multiply_coefficients (bool):  
                 whether it should be multiplied by coefficients.
             
-        Returns
+        Returns:
             Predictions of each descriptor.
         """
         
@@ -728,24 +728,49 @@ class Regression(object):
         coefficients=self.coefficients
         n_sample=self.n_sample
         data=self.data_task
-        predictions=np.zeros([np.array(n_sample).sum(),dimension+1])
+        predictions=np.zeros([dimension+1,np.array(n_sample).sum()])
         total_n_sample=0
         for task in range(len(n_sample)):
-            predictions[total_n_sample:total_n_sample+n_sample[task],0]=self.intercepts[task][dimension-1]
+            predictions[0,total_n_sample:total_n_sample+n_sample[task]]=self.intercepts[task][dimension-1]
             total_n_sample+=n_sample[task]
         if multiply_coefficients:
             for d in range(dimension):
                 total_n_sample=0
                 for task in range(len(n_sample)):
-                    predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values
                     total_n_sample+=n_sample[task]
         else:
             for d in range(dimension):
                 total_n_sample=0
                 for task in range(len(n_sample)):
-                    predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
                     total_n_sample+=n_sample[task]
         return predictions
+    
+    def check_percentage(self,dimension,absolute=True):
+        r"""
+        Checks percentage of each descriptors.
+        
+        Arguments:  
+            dimension (int):
+                dimension of the descriptor.
+                
+            absolute (bool):
+                whether return the absolute descriptor.
+                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+                and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,
+                and denominator is the proeprty. In this case, sometimes it will be larger than 1.
+                
+        Returns:
+            percentage which index is [dimension, sample].
+        """
+        
+        predictions=self.check_predictions(dimension)
+        if absolute:
+            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)
+        else:
+            return predictions/self.property.values
 
 
 
@@ -1208,24 +1233,49 @@ class RegressionCV(Regression):
         else:
             n_sample=self.n_validation_sample[cv_idx]
             data=self.validation_data_task[cv_idx]
-        predictions=np.zeros([n_sample.sum(),dimension+1])
+        predictions=np.zeros([dimension+1,n_sample.sum()])
         total_n_sample=0
         for task in range(len(n_sample)):
-            predictions[total_n_sample:total_n_sample+n_sample[task],0]=self.intercepts[cv_idx][task][dimension-1]
+            predictions[0,total_n_sample:total_n_sample+n_sample[task]]=self.intercepts[cv_idx][task][dimension-1]
             total_n_sample+=n_sample[task]
         if multiply_coefficients:
             for d in range(dimension):
                 total_n_sample=0
                 for task in range(len(n_sample)):
-                    predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values
                     total_n_sample+=n_sample[task]
         else:
             for d in range(dimension):
                 total_n_sample=0
                 for task in range(len(n_sample)):
-                    predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
                     total_n_sample+=n_sample[task]
         return predictions
+    
+    def check_percentage(self,cv_idx,dimension,absolute=True):
+        r"""
+        Checks percentage of each descriptors.
+        
+        Arguments:  
+            dimension (int):
+                dimension of the descriptor.
+                
+            absolute (bool):
+                whether return the absolute descriptor.
+                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+                and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,
+                and denominator is the proeprty. In this case, sometimes it will be larger than 1.
+                
+        Returns:
+            percentage which index is [dimension, sample].
+        """
+        
+        predictions=self.check_predictions(cv_idx,dimension)
+        if absolute:
+            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)
+        else:
+            return predictions/self.property[cv_idx].values
 
 
 
@@ -1517,7 +1567,71 @@ class Classification(object):
                             compute_errors(self.errors(training=training,display_task=display_task))])
         else:
             return compute_errors(self.errors(training=training,display_task=display_task))
-'''
+        
+    def check_predictions(self,dimension,multiply_coefficients=True):
+        r"""
+        Checks predictions of each descriptor.
+        
+        Arguments:  
+            dimension (int):
+                dimension of the descriptor.
+                
+            multiply_coefficients (bool):  
+                whether it should be multiplied by coefficients.
+            
+        Returns:
+            Predictions of each descriptor.
+        """
+        
+        descriptors=self.descriptors
+        coefficients=self.coefficients
+        n_sample=self.n_sample
+        data=self.data_task
+        predictions=np.zeros([dimension+1,np.array(n_sample).sum()])
+        total_n_sample=0
+        for task in range(len(n_sample)):
+            predictions[0,total_n_sample:total_n_sample+n_sample[task]]=self.intercepts[task][dimension-1]
+            total_n_sample+=n_sample[task]
+        if multiply_coefficients:
+            for d in range(dimension):
+                total_n_sample=0
+                for task in range(len(n_sample)):
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=coefficients[task][dimension-1][d]*evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    total_n_sample+=n_sample[task]
+        else:
+            for d in range(dimension):
+                total_n_sample=0
+                for task in range(len(n_sample)):
+                    predictions[d+1,total_n_sample:total_n_sample+n_sample[task]]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
+                    total_n_sample+=n_sample[task]
+        return predictions
+    
+    def check_percentage(self,dimension,absolute=True):
+        r"""
+        Checks percentage of each descriptors.
+        
+        Arguments:  
+            dimension (int):
+                dimension of the descriptor.
+                
+            absolute (bool):
+                whether return the absolute descriptor.
+                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+                and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,
+                and denominator is the proeprty. In this case, sometimes it will be larger than 1.
+                
+        Returns:
+            percentage which index is [dimension, sample].
+        """
+        
+        predictions=self.check_predictions(dimension)
+        if absolute:
+            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)
+        else:
+            return predictions/self.property.values
+    '''
+
 
 
 
@@ -1974,4 +2088,29 @@ class ClassificationCV(Classification):
                     predictions[total_n_sample:total_n_sample+n_sample[task],d+1]=evaluate_expression(descriptors[dimension-1][d],data[task]).values
                     total_n_sample+=n_sample[task]
         return predictions
+        
+    def check_percentage(self,cv_idx,dimension,absolute=True):
+        r"""
+        Checks percentage of each descriptors.
+        
+        Arguments:  
+            dimension (int):
+                dimension of the descriptor.
+                
+            absolute (bool):
+                whether return the absolute descriptor.
+                If it is ``True``, the numerator is absolute value of each descriptor multiplied by corresponding coefficient,
+                and denominator is the sum of intercept and every descriptor multiplied by coefficient.
+                If it is ``False``, the numerator is descriptor multiplied by corresponding coefficient,
+                and denominator is the proeprty. In this case, sometimes it will be larger than 1.
+                
+        Returns:
+            percentage which index is [dimension, sample].
+        """
+        
+        predictions=self.check_predictions(cv_idx,dimension)
+        if absolute:
+            return np.abs(predictions)/np.sum(np.abs(predictions),axis=0)
+        else:
+            return predictions/self.property[cv_idx].values
     '''

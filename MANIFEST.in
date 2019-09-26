@@ -1,0 +1,5 @@
+recursive-include docs *
+recursive-include examples *
+recursive-include tutorials *
+recursive-include SISSOkit/notebook_templates *
+include README.md
