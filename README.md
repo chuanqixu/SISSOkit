@@ -51,7 +51,7 @@ Then run all cells, and you will get fundamental analysis of SISSO results.
 
 ### Usage
 
-Main idea of SISSOkit is that every SISSO result is an instance. The basic class in SISSOkit is `Regression`, `RegressionCV`, `classification`, `classificationCV` in module `SISSOkit.evaluation`. To instantiate them, you only need to pass directory path to it.
+Main idea of SISSOkit is that every SISSO result is an instance. The basic class in SISSOkit is `Regression`, `RegressionCV`, `Classification`, `ClassificationCV` in module `SISSOkit.evaluation`. To instantiate them, you only need to pass directory path to it.
 
 Arguments in `SISSO.in`, descriptors, coefficients and intercepts in `SISSO.out` are all accessible by getting the attributes.
 
